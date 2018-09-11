@@ -1,3 +1,30 @@
+/*
+Software per il controllo del processo di fermentazione con impianti frigoriferi.
+
+Il software si basa sui seguenti componenti:
+- microprocessore Arduino Mega2560
+- display LCD 20x4
+- modulo real time clock DS3231 (RTC)
+- 3 pulsanti normalmente aperti (NO)
+- modulo ADS1115 a 16 bit (ADC)
+- sonda di temperatura Eliwell PTC.
+
+Predisposizione per:
+- raffreddamento (impianti chiller o altro)
+- riscaldamento (impianti elettrici)
+- ventola cpu
+- ventola camera di fermentazione.
+
+I parametri di funzionamento sono attivabili e modificabili da display LCD.
+
+Prossimi step:
+1) modificare lo sketch con menù a 3 livelli (main - first - second)
+2) modificare lo sketch per il funzionamento con sonda di temperatura PT100/NTC
+3) sviluppare interfaccia per visualizzazione dati in tempo reale via Bluetooth e/o web
+4) sviluppare interfaccia per modifica parametri via Bluetooth e/o web
+5) creazione PCB.
+*/
+
 #include <Wire.h>
 #include <DS3231.h>
 #include <LiquidCrystal_I2C.h>
