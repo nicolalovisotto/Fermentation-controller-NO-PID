@@ -1,5 +1,6 @@
 /*
-Software per il controllo del processo di fermentazione in impianti frigoriferi.
+Software per il controllo del processo di fermentazione con impianti frigoriferi.
+
 Il software si basa sui seguenti componenti:
 - microprocessore Arduino Mega2560
 - display LCD 20x4
@@ -20,7 +21,8 @@ Prossimi step:
 1) modificare lo sketch con menù a 3 livelli (main - first - second)
 2) modificare lo sketch per il funzionamento con sonda di temperatura PT100/NTC
 3) sviluppare interfaccia per visualizzazione dati in tempo reale via Bluetooth e/o web
-4) sviluppare interfaccia per modifica parametri via Bluetooth e/o web.
+4) sviluppare interfaccia per modifica parametri via Bluetooth e/o web
+5) creazione PCB.
 */
 
 #include <Wire.h>
