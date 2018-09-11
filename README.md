@@ -1,4 +1,4 @@
 # buildings
-varies
-//Tryharder
-//programs semplify your life
+Tryharder
+
+Software development for real life automatable tasks
