@@ -132,7 +132,7 @@ unsigned long target;  //variabile utilizzata come timer accensioni/standby
 unsigned long light;  //variabile utilizzata come timer accensioni illuminazione display lcd
 unsigned long fan;  //variabile utilizzata come timer accensioni ventola camera di fermentazione
 unsigned long fanon;  //variabile utilizzata per impostare il tempo di accensione ventilazione
-unsigned long menu=0;  //variabile utilizzata come timer per tornare al menu principale
+unsigned long main=0;  //variabile utilizzata come timer per tornare al menu principale
 
 //***ACCENSIONI***//
 byte refrigeration=LOW;  //stato raffreddamento spento
@@ -202,7 +202,7 @@ void setup(){
 
 void loop(){
   //***COMANDI PER SCORRERE MENU E PARAMETRI***//
-   if((long)(millis()-menu)>=0){  //se il tempo trascorso è maggiore di menu
+   if((long)(millis()-main)>=0){  //se il tempo trascorso è maggiore di main
     enter=0;  //resetta la variabile
     scroll1=0;  //resetta la variabile
     mod=0;  //resetta la variabile
@@ -210,28 +210,51 @@ void loop(){
     mod2=0;  //resetta la variabile
     printed=0;  //resetta la variabile
   }
-  val_enter=digitalRead(enter);  //leggi lo stato del pulsante enter
   val_up=digitalRead(up);  //leggi lo stato del pulsante up
-  val_down=digitalRead(down);  //leggi lo stato del pulsante down
   if(val_up!=upstate){  //se l input del pulsante è diverso dalla variabile di stato
     upstate=val_up;  //salva l input del pulsante nella variabile di stato
-    if(upstate==HIGH){  //se lo stato del pulsante è high
-      scroll1++;  //incrementa la variabile
-      mod1++;  //incrementa la variabile
-      mod2++;  //incrementa la variabile
-      mod3++;  //incrementa la variabile
-      printed=0;  //resetta la variabile
-    }
   }
+  val_down=digitalRead(down);  //leggi lo stato del pulsante down
   if(val_down!=downstate){  //se l input del pulsante è diverso dalla variabile di stato
     downstate=val_down;  //salva l input del pulsante nella variabile di stato
-    if(downstate==HIGH){  //se lo stato del pulsante è high
-      scroll1--;  //decrementa la variabile
-      mod1--;  //decrementa la variabile
-      mod2--;  //decrementa la variabile
-      mod3--;  //decrementa la variabile
-      printed=0;  //resetta la variabile
-    }
+  }
+  if(menu1>2||menu1<0){
+    menu1=0;
+  }
+  if(menu2>2||menu2<0){
+    menu2=0;
+  }
+  switch(enter1){
+    case 0:
+      if(upstate==HIGH){
+        menu1++;  //incrementa la variabile
+        printed=0;  //resetta la variabile
+      }
+      if(downstate==HIGH){
+        menu1--;  //decrementa la variabile
+        printed=0;  //resetta la variabile
+      }
+      break;
+    case 1:
+      if(upstate==HIGH){
+        menu2++;  //incrementa la variabile
+        printed=0;  //resetta la variabile
+      }
+      if(downstate==HIGH){
+        menu2--;  //decrementa la variabile
+        printed=0;  //resetta la variabile
+      }
+      break;
+    case 2:
+      if(upstate==HIGH){
+        menu3++;  //incrementa la variabile
+        printed=0;  //resetta la variabile
+      }
+      if(downstate==HIGH){
+        menu3--;  //decrementa la variabile
+        printed=0;  //resetta la variabile
+      }
+      break;
   }
   //***MENU IN VISUALIZZAZIONE***//
   if(enter==0&&scroll1==0&&printed==0){  //se enter è uguale a 0 scroll1 è uguale a 0 e printed è uguale a 0
@@ -275,7 +298,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==0&&scroll1==1&&printed==0){  //se enter è uguale a 0 scroll1 è uguale a 1 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
     lcd.print("INSTANT PARAMETERS  ");  //scrivi
@@ -288,7 +311,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==0&&scroll1==2&&printed==0){  //se enter è uguale a 0 scroll1 è uguale a 2 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
     lcd.print("INSTANT PARAMETERS  ");  //scrivi
@@ -301,7 +324,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==0&&scroll1==3&&printed==0){  //se enter è uguale a 0 scroll1 è uguale a 3 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
     lcd.print("INSTANT PARAMETERS  ");  //scrivi
@@ -314,7 +337,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==0&&scroll1==4&&printed==0){  //se enter è uguale a 0 scroll1 è uguale a 4 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
     lcd.print("INSTANT PARAMETERS  ");  //scrivi
@@ -327,7 +350,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==0&&scroll1==5&&printed==0){  //se enter è uguale a 0 scroll1 è uguale a 5 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
     lcd.print("INSTANT PARAMETERS  ");  //scrivi
@@ -340,7 +363,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==0&&scroll1==6&&printed==0){  //se enter è uguale a 0 scroll1 è uguale a 6 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
     lcd.print("INSTANT PARAMETERS  ");  //scrivi
@@ -353,7 +376,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==0&&scroll1==7&&printed==0){  //se enter è uguale a 0 scroll1 è uguale a 7 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
     lcd.print("INSTANT PARAMETERS  ");  //scrivi
@@ -366,7 +389,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==0&&scroll1==8&&printed==0){  //se enter è uguale a 0 scroll1 è uguale a 8 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
     lcd.print("INSTANT PARAMETERS  ");  //scrivi
@@ -379,7 +402,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==0&&scroll1==9&&printed==0){  //se enter è uguale a 0 scroll1 è uguale a 9 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
     lcd.print("INSTANT PARAMETERS  ");  //scrivi
@@ -392,7 +415,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==0&&scroll1==10&&printed==0){  //se enter è uguale a 0 scroll1 è uguale a 10 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
     lcd.print("INSTANT PARAMETERS  ");  //scrivi
@@ -597,7 +620,7 @@ void loop(){
   }
   //***VISUALIZZAZIONE MENU DI MODIFICA***//
   if(enter==1&&printed==0){  //se enter è uguale a 1 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod1>63||mod1<0){  //se la variabile mod1 è maggiore di 63 o minore di 0
       mod1=0;  //resetta la variabile
     }
@@ -613,7 +636,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==2&&printed==0){  //se enter è uguale a 2 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod1>63||mod1<0){  //se la variabile mod1 è maggiore di 63 o minore di 0
       mod1=0;  //resetta la variabile
     }
@@ -629,7 +652,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==3&&printed==0){  //se enter è uguale a 3 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
       mod2=0;  //resetta la variabile
     }
@@ -645,7 +668,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==4&&printed==0){  //se enter è uguale a 4 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
       mod2=0;  //resetta la variabile
     }
@@ -661,7 +684,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==5&&printed==0){  //se enter è uguale a 5 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
       mod2=0;  //resetta la variabile
     }
@@ -677,7 +700,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==6&&printed==0){  //se enter è uguale a 6 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
       mod2=0;  //resetta la variabile
     }
@@ -693,7 +716,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==7&&printed==0){  //se enter è uguale a 7 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
       mod2=0;  //resetta la variabile
     }
@@ -709,7 +732,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==8&&printed==0){  //se enter è uguale a 8 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod3>3||mod3<0){  //se la variabile mod3 è maggiore di 4 o minore di 0
       mod3=0;  //resetta la variabile
     }
@@ -725,7 +748,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==9&&printed==0){  //se enter è uguale a 9 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod3>3||mod3<0){  //se la variabile mod3 è maggiore di 3 o minore di 0
       mod3=0;  //resetta la variabile
     }
@@ -741,7 +764,7 @@ void loop(){
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   if(enter==10&&printed==0){  //se enter è uguale a 10 e printed è uguale a 0
-    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod3>3||mod3<0){  //se la variabile mod3 è maggiore di 4 o minore di 0
       mod3=0;  //resetta la variabile
     }
