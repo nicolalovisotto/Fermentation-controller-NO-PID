@@ -778,7 +778,7 @@ void loop(){
     }
   }
   /*VISUALIZZAZIONE MENU DI MODIFICA*/
-  if(enter1==2&&menu1==1&&menu2==0&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 0 e printed è uguale a 0
+  if(enter1==2&&menu1==1&&menu2==0&&printed==0){  //se enter1 è uguale a 2 menu1 è uguale a 1 menu2 è uguale a 0 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
       mod2=0;  //resetta la variabile
@@ -794,7 +794,7 @@ void loop(){
     lcd.print(standbyidle[mod2]);  //scrivi l indice dell array standbyidle corrispondente al valore mod2
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==2&&menu1==1&&menu2==1&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 1 e printed è uguale a 0
+  if(enter1==2&&menu1==1&&menu2==1&&printed==0){  //se enter1 è uguale a 2 menu1 è uguale a 1 menu2 è uguale a 1 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod1>63||mod1<0){  //se la variabile mod1 è maggiore di 63 o minore di 0
       mod1=0;  //resetta la variabile
@@ -810,7 +810,7 @@ void loop(){
     lcd.print(toptemp[mod1],2);  //scrivi l indice dell array toptemp corrispondente al valore mod1 con due cifre dopo la virgola
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==2&&menu1==1&&menu2==2&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 2 e printed è uguale a 0
+  if(enter1==2&&menu1==1&&menu2==2&&printed==0){  //se enter1 è uguale a 2 menu1 è uguale a 1 menu2 è uguale a 2 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
       mod2=0;  //resetta la variabile
@@ -826,7 +826,7 @@ void loop(){
     lcd.print(coldstartup[mod2]);  //scrivi l indice dell array coldstartup corrispondente al valore mod2
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==2&&menu1==1&&menu2==3&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 3 e printed è uguale a 0
+  if(enter1==2&&menu1==1&&menu2==3&&printed==0){  //se enter1 è uguale a 2 menu1 è uguale a 1 menu2 è uguale a 3 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
       mod2=0;  //resetta la variabile
@@ -842,7 +842,7 @@ void loop(){
     lcd.print(coldidle[mod2]);  //scrivi l indice dell array coldidle corrispondente al valore mod2
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==2&&printed==0){  //se enter1 è uguale a 2 e printed è uguale a 0
+  if(enter1==2&&menu1==1&&menu2==4&&printed==0){  //se enter1 è uguale a 2 menu1 è uguale a 1 menu2 è uguale a 4 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod1>63||mod1<0){  //se la variabile mod1 è maggiore di 63 o minore di 0
       mod1=0;  //resetta la variabile
@@ -858,7 +858,7 @@ void loop(){
     lcd.print(bottomtemp[mod1],2);  //scrivi l indice dell array bottomtemp corrispondente al valore mod1 con due cifre dopo la virgola
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==5&&printed==0){  //se enter1 è uguale a 5 e printed è uguale a 0
+  if(enter1==2&&menu1==1&&menu2==5&&printed==0){  //se enter1 è uguale a 2 menu1 è uguale a 1 menu2 è uguale a 5 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
       mod2=0;  //resetta la variabile
@@ -874,7 +874,7 @@ void loop(){
     lcd.print(heatstartup[mod2]);  //scrivi l indice dell array heatstartup corrispondente al valore mod2
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==6&&printed==0){  //se enter1 è uguale a 6 e printed è uguale a 0
+  if(enter1==2&&menu1==1&&menu2==6&&printed==0){  //se enter1 è uguale a 2 menu1 è uguale a 1 menu2 è uguale a 6 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
       mod2=0;  //resetta la variabile
@@ -890,23 +890,7 @@ void loop(){
     lcd.print(heatidle[mod2]);  //scrivi l indice dell array heatidle corrispondente al valore mod2
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==7&&printed==0){  //se enter1 è uguale a 7 e printed è uguale a 0
-    main=millis()+home;  //imposta il timer di ritorno al menu principale
-    if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
-      mod2=0;  //resetta la variabile
-    }
-    lcd.clear();  //pulisci lo schermo
-    lcd.setCursor(0,0);  //posiziona il cursore a
-    lcd.print("INSTANT PARAMETERS  ");  //scrivi
-    lcd.setCursor(0,1);  //posiziona il cursore a
-    lcd.print("set to modify       ");  //scrivi
-    lcd.setCursor(0,2);  //posiziona il cursore a
-    lcd.print("Standby idle time   ");  //scrivi
-    lcd.setCursor(0,3);  //posiziona il cursore a
-    lcd.print(standbyidle[mod2]);  //scrivi l indice dell array standbyidle corrispondente al valore mod2
-    printed=1;  //setta la variabile a 1 per visualizzare una sola volta
-  }
-  if(enter1==8&&printed==0){  //se enter1 è uguale a 8 e printed è uguale a 0
+  if(enter1==2&&menu1==1&&menu2==7&&printed==0){  //se enter1 è uguale a 2 menu1 è uguale a 1 menu2 è uguale a 7 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod3>3||mod3<0){  //se la variabile mod3 è maggiore di 4 o minore di 0
       mod3=0;  //resetta la variabile
@@ -922,7 +906,7 @@ void loop(){
     lcd.print(controltemp[mod3]);  //scrivi l indice dell array controltemp corrispondente al valore mod3
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==9&&printed==0){  //se enter1 è uguale a 9 e printed è uguale a 0
+  if(enter1==2&&menu1==1&&menu2==8&&printed==0){  //se enter1 è uguale a 2 menu1 è uguale a 1 menu2 è uguale a 8 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod3>3||mod3<0){  //se la variabile mod3 è maggiore di 3 o minore di 0
       mod3=0;  //resetta la variabile
@@ -931,27 +915,91 @@ void loop(){
     lcd.setCursor(0,0);  //posiziona il cursore a
     lcd.print("MODIFY  PARAMETERS  ");  //scrivi
     lcd.setCursor(0,1);  //posiziona il cursore a
-    lcd.print("enter1 to set        ");  //scrivi
+    lcd.print("set to modify       ");  //scrivi
     lcd.setCursor(0,2);  //posiziona il cursore a
     lcd.print("Exit from menu time ");  //scrivi
     lcd.setCursor(0,3);  //posiziona il cursore a
     lcd.print(mainmenu[mod3]);  //scrivi l indice dell array mainmenu corrispondente al valore mod3
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==10&&printed==0){  //se enter1 è uguale a 10 e printed è uguale a 0
+  if(enter1==2&&menu1==1&&menu2==9&&printed==0){  //se enter1 è uguale a 2 menu1 è uguale a 1 menu2 è uguale a 9 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod3>3||mod3<0){  //se la variabile mod3 è maggiore di 4 o minore di 0
       mod3=0;  //resetta la variabile
     }
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
-    lcd.print("INSTANT PARAMETERS  ");  //scrivi
+    lcd.print("MODIFY  PARAMETERS  ");  //scrivi
     lcd.setCursor(0,1);  //posiziona il cursore a
     lcd.print("set to modify       ");  //scrivi
     lcd.setCursor(0,2);  //posiziona il cursore a
-    lcd.print("Backlight on time   ");  //scrivi
+    lcd.print("LCD backlight time  ");  //scrivi
     lcd.setCursor(0,3);  //posiziona il cursore a
     lcd.print(backlight[mod3]);  //scrivi l indice dell array backlight corrispondente al valore mod3
+    printed=1;  //setta la variabile a 1 per visualizzare una sola volta
+  }
+  if(enter1==2&&menu1==2&&menu2==0&&printed==0){  //se enter1 è uguale a 2 menu1 è uguale a 2 menu2 è uguale a 0 e printed è uguale a 0
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
+    if(mod3>3||mod3<0){  //se la variabile mod3 è maggiore di 4 o minore di 0
+      mod3=0;  //resetta la variabile
+    }
+    lcd.clear();  //pulisci lo schermo
+    lcd.setCursor(0,0);  //posiziona il cursore a
+    lcd.print("STARTUPS FORCING   ");  //scrivi
+    lcd.setCursor(0,1);  //posiziona il cursore a
+    lcd.print("0:disable 1:off 2:on");  //scrivi
+    lcd.setCursor(0,2);  //posiziona il cursore a
+    lcd.print("Cold startup        ");  //scrivi
+    lcd.setCursor(0,3);  //posiziona il cursore a
+    lcd.print(forcecold[mod3]);  //scrivi l indice dell array forcecold corrispondente al valore mod3
+    printed=1;  //setta la variabile a 1 per visualizzare una sola volta
+  }
+  if(enter1==2&&menu1==2&&menu2==1&&printed==0){  //se enter1 è uguale a 2 menu1 è uguale a 2 menu2 è uguale a 1 e printed è uguale a 0
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
+    if(mod3>3||mod3<0){  //se la variabile mod3 è maggiore di 4 o minore di 0
+      mod3=0;  //resetta la variabile
+    }
+    lcd.clear();  //pulisci lo schermo
+    lcd.setCursor(0,0);  //posiziona il cursore a
+    lcd.print("STARTUPS FORCING   ");  //scrivi
+    lcd.setCursor(0,1);  //posiziona il cursore a
+    lcd.print("0:disable 1:off 2:on");  //scrivi
+    lcd.setCursor(0,2);  //posiziona il cursore a
+    lcd.print("Heat startup        ");  //scrivi
+    lcd.setCursor(0,3);  //posiziona il cursore a
+    lcd.print(heatstartup[mod3]);  //scrivi l indice dell array heatstartup corrispondente al valore mod3
+    printed=1;  //setta la variabile a 1 per visualizzare una sola volta
+  }
+  if(enter1==2&&menu1==2&&menu2==2&&printed==0){  //se enter1 è uguale a 2 menu1 è uguale a 2 menu2 è uguale a 2 e printed è uguale a 0
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
+    if(mod3>3||mod3<0){  //se la variabile mod3 è maggiore di 4 o minore di 0
+      mod3=0;  //resetta la variabile
+    }
+    lcd.clear();  //pulisci lo schermo
+    lcd.setCursor(0,0);  //posiziona il cursore a
+    lcd.print("STARTUPS FORCING   ");  //scrivi
+    lcd.setCursor(0,1);  //posiziona il cursore a
+    lcd.print("0:disable 1:off 2:on");  //scrivi
+    lcd.setCursor(0,2);  //posiziona il cursore a
+    lcd.print("Chamber fan startup ");  //scrivi
+    lcd.setCursor(0,3);  //posiziona il cursore a
+    lcd.print(forcechamberfan[mod3]);  //scrivi l indice dell array forcechamberfan corrispondente al valore mod3
+    printed=1;  //setta la variabile a 1 per visualizzare una sola volta
+  }
+  if(enter1==2&&menu1==2&&menu2==3&&printed==0){  //se enter1 è uguale a 2 menu1 è uguale a 2 menu2 è uguale a 3 e printed è uguale a 0
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
+    if(mod3>3||mod3<0){  //se la variabile mod3 è maggiore di 4 o minore di 0
+      mod3=0;  //resetta la variabile
+    }
+    lcd.clear();  //pulisci lo schermo
+    lcd.setCursor(0,0);  //posiziona il cursore a
+    lcd.print("STARTUPS FORCING   ");  //scrivi
+    lcd.setCursor(0,1);  //posiziona il cursore a
+    lcd.print("0:disable 1:off 2:on");  //scrivi
+    lcd.setCursor(0,2);  //posiziona il cursore a
+    lcd.print("CPU fan startup     ");  //scrivi
+    lcd.setCursor(0,3);  //posiziona il cursore a
+    lcd.print(forcecpufan[mod3]);  //scrivi l indice dell array forcecpufan corrispondente al valore mod3
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
   /*COMANDI PER MODIFICARE PARAMETRI*/
