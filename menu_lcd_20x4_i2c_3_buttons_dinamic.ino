@@ -221,11 +221,8 @@ void loop(){
       if(enter1==0){  //se enter1 è uguale a zero
         menu1++;  //incrementa la variabile
       }
-      else if(enter1==1){  //se enter1 è uguale a uno
+      if(enter1==1){  //se enter1 è uguale a uno
         menu2++;  //incrementa la variabile
-      }
-      else if(enter1==2){  //se enter1 è uguale a due
-        menu3++;  //incrementa la variabile
       }
       printed=0;  //resetta la variabile
     }
@@ -236,17 +233,14 @@ void loop(){
       if(enter1==0){  //se enter1 è uguale a zero
         menu1--;  //decrementa la variabile
       }
-      else if(enter1==1){  //se enter1 è uguale a uno
+      if(enter1==1){  //se enter1 è uguale a uno
         menu2--;  //decrementa la variabile
-      }
-      else if(enter1==2){  //se enter1 è uguale a due
-        menu3--;  //decrementa la variabile
       }
       printed=0;  //resetta la variabile
     }
   }
-  /*MENU IN VISUALIZZAZIONE*/
-  if(enter1==0&&menu1==0&&menu2==0&&menu3==0&&printed==0){  //se enter1 è uguale a 0 menu1 è uguale a 0 menu2 è uguale a 0 menu3 è uguale a 0 e printed è uguale a 0
+  /*SCHERMATA PRINCIPALE*/
+  if(enter1==0&&menu1==0&&menu2==0&&printed==0){  //se enter1 è uguale a 0 menu1 è uguale a 0 menu2 è uguale a 0 e printed è uguale a 0
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
     lcd.print("Temperature:");  //scrivi
@@ -286,7 +280,8 @@ void loop(){
     lcd.print(hscount);  //scrivi il contatore delle accensioni ciclo riscaldamento
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==0&&menu1==1&&menu2==0&&menu3==0&&printed==0){  //se enter1 è uguale a 0 menu1 è uguale a 1 menu2 è uguale a 0 menu3 è uguale a 0 e printed è uguale a 0
+  /*VISUALIZZAZIONE MENU PRINCIPALI*/
+  if(enter1==0&&menu1==1&&menu2==0&&printed==0){  //se enter1 è uguale a 0 menu1 è uguale a 1 menu2 è uguale a 0 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -299,7 +294,7 @@ void loop(){
     lcd.print("                     ");  //scrivi
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==0&&menu1==2&&menu2==0&&menu3==0&&printed==0){  //se enter1 è uguale a 0 menu1 è uguale a 2 menu2 è uguale a 0 menu3 è uguale a 0 e printed è uguale a 0
+  if(enter1==0&&menu1==2&&menu2==0&&printed==0){  //se enter1 è uguale a 0 menu1 è uguale a 2 menu2 è uguale a 0 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -312,7 +307,8 @@ void loop(){
     lcd.print("                     ");  //scrivi
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==1&&menu1==1&&menu2==1&&menu3==0&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 1 menu3 è uguale a 0 e printed è uguale a 0
+  /*VISUALIZZAZIONE SOTTOMENU*/
+  if(enter1==1&&menu1==1&&menu2==1&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 1 menu3 è uguale a 0 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -325,7 +321,7 @@ void loop(){
     lcd.print(sbidle);  //scrivi la variabile sbidle
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==1&&menu1==1&&menu2==2&&menu3==0&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 2 menu3 è uguale a 0 e printed è uguale a 0
+  if(enter1==1&&menu1==1&&menu2==2&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 2 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -338,7 +334,7 @@ void loop(){
     lcd.print(maxtemp,2);  //scrivi la variabile maxtemp con due cifre dopo la virgola
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==1&&menu1==1&&menu2==3&&menu3==0&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 3 menu3 è uguale a 0 e printed è uguale a 0
+  if(enter1==1&&menu1==1&&menu2==3&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 3 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -351,7 +347,7 @@ void loop(){
     lcd.print(cstartup);  //scrivi la variabile cstartup
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==1&&menu1==1&&menu2==4&&menu3==0&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 4 menu3 è uguale a 0 e printed è uguale a 0
+  if(enter1==1&&menu1==1&&menu2==4&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 4 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -364,7 +360,7 @@ void loop(){
     lcd.print(cidle);  //scrivi la variabile cidle
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==1&&menu1==1&&menu2==5&&menu3==0&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 5 menu3 è uguale a 0 e printed è uguale a 0
+  if(enter1==1&&menu1==1&&menu2==5&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 5 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -377,7 +373,7 @@ void loop(){
     lcd.print(mintemp,2);  //scrivi la variabile mintemp con due cifre dopo la virgola
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==1&&menu1==1&&menu2==6&&menu3==0&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 6 menu3 è uguale a 0 e printed è uguale a 0
+  if(enter1==1&&menu1==1&&menu2==6&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 6 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -390,7 +386,7 @@ void loop(){
     lcd.print(hstartup);  //scrivi la variabile hstartup
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==1&&menu1==1&&menu2==7&&menu3==0&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 7 menu3 è uguale a 0 e printed è uguale a 0
+  if(enter1==1&&menu1==1&&menu2==7&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 7 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -403,7 +399,7 @@ void loop(){
     lcd.print(hidle);  //scrivi la variabile hidle
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==1&&menu1==1&&menu2==8&&menu3==0&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 8 menu3 è uguale a 0 e printed è uguale a 0
+  if(enter1==1&&menu1==1&&menu2==8&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 8 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -416,7 +412,7 @@ void loop(){
     lcd.print(maxcputemp,1);  //scrivi la variabile maxcputemp con una cifra dopo la virgola
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==1&&menu1==1&&menu2==9&&menu3==0&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 9 menu3 è uguale a 0 e printed è uguale a 0
+  if(enter1==1&&menu1==1&&menu2==9&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 9 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -429,7 +425,7 @@ void loop(){
     lcd.print(home);  //scrivi la variabile sbidle
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==1&&menu1==1&&menu2==10&&menu3==0&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 10 menu3 è uguale a 0 e printed è uguale a 0
+  if(enter1==1&&menu1==1&&menu2==10&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 10 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -442,7 +438,7 @@ void loop(){
     lcd.print(blon);  //scrivi la variabile blon
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  if(enter1==1&&menu1==1&&menu2==10&&menu3==0&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 1 menu2 è uguale a 10 menu3 è uguale a 0 e printed è uguale a 0
+  if(enter1==1&&menu1==2&&menu2==0&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 2 menu2 è uguale a 0 e printed è uguale a 0
     main=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -454,6 +450,66 @@ void loop(){
     lcd.setCursor(0,3);  //posiziona il cursore a
     lcd.print(fcold);  //scrivi la variabile fcold
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
+  }
+  if(enter1==1&&menu1==2&&menu2==1&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 2 menu2 è uguale a 1 e printed è uguale a 0
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
+    lcd.clear();  //pulisci lo schermo
+    lcd.setCursor(0,0);  //posiziona il cursore a
+    lcd.print("SERVICE STATUS      ");  //scrivi
+    lcd.setCursor(0,1);  //posiziona il cursore a
+    lcd.print("scroll to select    ");  //scrivi
+    lcd.setCursor(0,2);  //posiziona il cursore a
+    lcd.print("Heat startup        ");  //scrivi
+    lcd.setCursor(0,3);  //posiziona il cursore a
+    lcd.print(fheat);  //scrivi la variabile fcold
+    printed=1;  //setta la variabile a 1 per visualizzare una sola volta
+  }
+  if(enter1==1&&menu1==2&&menu2==2&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 2 menu2 è uguale a 2 e printed è uguale a 0
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
+    lcd.clear();  //pulisci lo schermo
+    lcd.setCursor(0,0);  //posiziona il cursore a
+    lcd.print("SERVICE STATUS      ");  //scrivi
+    lcd.setCursor(0,1);  //posiziona il cursore a
+    lcd.print("scroll to select    ");  //scrivi
+    lcd.setCursor(0,2);  //posiziona il cursore a
+    lcd.print("Chamber fan startup ");  //scrivi
+    lcd.setCursor(0,3);  //posiziona il cursore a
+    lcd.print(fff);  //scrivi la variabile fcold
+    printed=1;  //setta la variabile a 1 per visualizzare una sola volta
+  }
+  if(enter1==1&&menu1==2&&menu2==3&&printed==0){  //se enter1 è uguale a 1 menu1 è uguale a 2 menu2 è uguale a 3 e printed è uguale a 0
+    main=millis()+home;  //imposta il timer di ritorno al menu principale
+    lcd.clear();  //pulisci lo schermo
+    lcd.setCursor(0,0);  //posiziona il cursore a
+    lcd.print("SERVICE STATUS      ");  //scrivi
+    lcd.setCursor(0,1);  //posiziona il cursore a
+    lcd.print("scroll to select    ");  //scrivi
+    lcd.setCursor(0,2);  //posiziona il cursore a
+    lcd.print("CPU fan startup     ");  //scrivi
+    lcd.setCursor(0,3);  //posiziona il cursore a
+    lcd.print(fcf);  //scrivi la variabile fcold
+    printed=1;  //setta la variabile a 1 per visualizzare una sola volta
+  }
+  /*COMANDI PER ENTRARE NEI SOTTOMENU*/
+  if(enter1==0&&menu1==1){
+    val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
+    if(val_forward!=forwardstate){  //se l'input del pulsante è diverso dallo stato del pulsante
+      forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
+      if(forwardstate==HIGH){  //se lo stato del pulsante è HIGH
+        enter1=1;  //setta la variabile a 1
+        menu2=0;  //resetta la variabile
+      }
+    }
+  }
+  if(enter1==0&&menu1==2){
+    val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
+    if(val_forward!=forwardstate){  //se l'input del pulsante è diverso dallo stato del pulsante
+      forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
+      if(forwardstate==HIGH){  //se lo stato del pulsante è HIGH
+        enter1=1;  //setta la variabile a 1
+        menu2=0;  //resetta la variabile
+      }
+    }
   }
   /*COMANDI PER ENTRARE NELLA MODALITA' MODIFICA*/
   if(enter1==0&&menu1==1){  //se enter1 è uguale a 0 e menu1 è uguale a 1
