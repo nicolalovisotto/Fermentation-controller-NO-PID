@@ -979,7 +979,7 @@ void loop(){
     lcd.print(forcecpufan[mod4]);  //scrivi l indice dell array forcecpufan corrispondente al valore mod4
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
   }
-  /*COMANDI PER MODIFICARE PARAMETRI*/  //necessario perché VISUALIZZAZIONE MENU DI MODIFICA vien scritto solo una volta
+  /*COMANDI PER CONFERMARE MODIFICA PARAMETRI*/  //necessario perché VISUALIZZAZIONE MENU DI MODIFICA vien scritto solo una volta
   else if(enter1==1){  //se enter1 è uguale a 1
     val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
@@ -1141,6 +1141,74 @@ void loop(){
         blon=backlight[mod3];  //salva il valore corrispondente alla variabile mod3 contenuto nell array backlight nella variabile blon
         light=millis()+blon;  //imposta il timer di accensione display
         menu1=10;  //setta la variabile a 10
+        mod1=0;  //resetta la variabile
+        mod2=0;  //resetta la variabile
+        mod3=0;  //resetta la variabile
+        mod4=0;  //resetta la variabile
+        enter1=0;  //resetta la variabile
+        printed=0;  //resetta la variabile
+      }
+    }
+  }
+  else if(enter1==11){  //se enter1 è uguale a 11
+    val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
+    if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
+      forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
+      if(forwardstate==HIGH){  //se lo stato del pulsante è high
+        fcold=forcecold[mod4];  //salva il valore corrispondente alla variabile mod4 contenuto nell array forcecold nella variabile fcold
+        light=millis()+blon;  //imposta il timer di accensione display
+        menu1=11;  //setta la variabile a 11
+        mod1=0;  //resetta la variabile
+        mod2=0;  //resetta la variabile
+        mod3=0;  //resetta la variabile
+        mod4=0;  //resetta la variabile
+        enter1=0;  //resetta la variabile
+        printed=0;  //resetta la variabile
+      }
+    }
+  }
+  else if(enter1==12){  //se enter1 è uguale a 12
+    val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
+    if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
+      forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
+      if(forwardstate==HIGH){  //se lo stato del pulsante è high
+        fheat=forceheat[mod4];  //salva il valore corrispondente alla variabile mod3 contenuto nell array forceheat nella variabile fheat
+        light=millis()+blon;  //imposta il timer di accensione display
+        menu1=12;  //setta la variabile a 12
+        mod1=0;  //resetta la variabile
+        mod2=0;  //resetta la variabile
+        mod3=0;  //resetta la variabile
+        mod4=0;  //resetta la variabile
+        enter1=0;  //resetta la variabile
+        printed=0;  //resetta la variabile
+      }
+    }
+  }
+  else if(enter1==13){  //se enter1 è uguale a 13
+    val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
+    if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
+      forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
+      if(forwardstate==HIGH){  //se lo stato del pulsante è high
+        fff=forcechamberfan[mod4];  //salva il valore corrispondente alla variabile mod4 contenuto nell array forcechamberfan nella variabile fff
+        light=millis()+blon;  //imposta il timer di accensione display
+        menu1=13;  //setta la variabile a 13
+        mod1=0;  //resetta la variabile
+        mod2=0;  //resetta la variabile
+        mod3=0;  //resetta la variabile
+        mod4=0;  //resetta la variabile
+        enter1=0;  //resetta la variabile
+        printed=0;  //resetta la variabile
+      }
+    }
+  }
+  else if(enter1==14){  //se enter1 è uguale a 14
+    val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
+    if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
+      forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
+      if(forwardstate==HIGH){  //se lo stato del pulsante è high
+        fcf=forcecpufan[mod4];  //salva il valore corrispondente alla variabile mod4 contenuto nell array forcecpufan nella variabile fcf
+        light=millis()+blon;  //imposta il timer di accensione display
+        menu1=14;  //setta la variabile a 14
         mod1=0;  //resetta la variabile
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
