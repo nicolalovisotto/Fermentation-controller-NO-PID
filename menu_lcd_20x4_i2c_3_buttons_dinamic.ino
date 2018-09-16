@@ -49,7 +49,7 @@ Prossimi step:
 #define D6_pin 6  //schermo lcd
 #define D7_pin 7  //schermo lcd
 
-DS3231 rtc(SDA,SCL);  //indirizzo modulo rtc
+//DS3231 rtc(SDA,SCL);  //indirizzo modulo rtc
 Adafruit_ADS1115 ads(I2C_ADC_ADDR);  //indirizzo modulo adc
 LiquidCrystal_I2C lcd(I2C_LCD_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin);  // indirizzo display lcd
 
@@ -125,10 +125,8 @@ int fff=1;  //variabile utilizzata per abilitare/disabilitare/forzare ventilazio
 int fcf=1;  //variabile utilizzata per abilitare/disabilitare/forzare ventilazione cpu
 
 /*COSTANTI PER ACCENSIONE FORZATA*/
-unsigned long fcoldstartup=1800000;  //costante utilizzata per impostare il tempo di accensione raffreddamento in accensione forzata
-unsigned long fcoldidle=900000;  //costante utilizzata per impostare il tempo di standby raffreddamento in accensione forzata
-unsigned long fheatstartup=1800000;  //costante utilizzata per impostare il tempo di accensione riscaldamento in accensione forzata
-unsigned long fheatidle=900000;  //costante utilizzata per impostare il tempo di standby riscaldamento in accensione forzata
+unsigned long fstartup=1800000;  //costante utilizzata per impostare il tempo di accensione raffreddamento/riscaldamento in accensione forzata
+unsigned long fidle=900000;  //costante utilizzata per impostare il tempo di standby raffreddamento/riscaldamento in accensione forzata
 
 /*STATO DEL SISTEMA*/
 int mode=5;  //variabile utilizzata per sapere lo stato del sistema
@@ -263,6 +261,9 @@ void loop(){
       light=millis()+blon;  //imposta timer illuminazione display lcd
       printed=0;  //resetta la variabile
     }
+  }
+  if(stats>14||stats<0){
+    stats=0;
   }
   /*SCHERMATA PRINCIPALE*/
   if(enter1==0&&stats==0&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 0 e printed è uguale a 0
@@ -1581,32 +1582,60 @@ void loop(){
         }
       }
       else if(fermtempaverage>maxtemp){  //se la temperatura media è superiore alla temperatura massima impostata
-        refrigeration=HIGH;  //cambia lo stato del raffreddamento in acceso
-        digitalWrite(7,HIGH);  //accendi il raffreddamento
-        ventilation=HIGH;  //cambia lo stato della ventilazione in acceso
-        digitalWrite(5,ventilation);  //accendi la ventilazione
+        if(fcold==0){
+          refrigeration=LOW;
+          digitalWrite(7,refrigeration);
+          target=millis()+cstartup;  //imposta il timer di startup raffreddamento
+        }
+        else if(fcold==1){
+          refrigeration=HIGH;  //cambia lo stato del raffreddamento in acceso
+          digitalWrite(7,HIGH);  //accendi il raffreddamento
+          target=millis()+cstartup;  //imposta il timer di startup raffreddamento
+        }
+        else if(fcold==2){
+          refrigeration=HIGH;  //cambia lo stato del raffreddamento in acceso
+          digitalWrite(7,HIGH);  //accendi il raffreddamento
+          target=millis()+fstartup;
+        }
         mode=1;  //setta il valore dello stato del sistema a 1
-        target=millis()+cstartup;  //imposta il timer di startup raffreddamento
-        light=millis()+blon;  //imposta il timer di accensione display
-        fanon=cstartup+cidle;  //setta il tempo di accensione ventilazione per l intero ciclo
-        fan=millis()+fanon;  //imposta il timer di accensione ventilazione camera di fermentazione
-        fermtempaverage=99;  //setta il valore della temperatura media al massimo
+        if(fff==0){
+          ventilation=0;  //setta la ventilazione a 0% pwm
+          analogWrite(5,ventilation);  //spegni la ventilazione
+        }
+        else if(fff==1||fff==2){
+          ventilation=255;  //setta la ventilazione a 100% pwm
+          analogWrite(5,ventilation);  //accendi la ventilazione
+        }
         cscount++;  //aumenta il contatore accensioni
         if(cscount>99999999){  //se il contatore accensioni arriva a 100
           cscount=1;  //fai ripartire il contatore accensioni da 1
         }
       }
       else if(fermtempaverage<mintemp){  //se la temperatura media è inferiore alla temperatura minima impostata
-        heating=HIGH;  //cambia lo stato del riscaldamento in acceso
-        digitalWrite(8,heating);  //accendi il riscaldamento
-        ventilation=HIGH;  //cambia lo stato della ventilazione in acceso
-        digitalWrite(5,ventilation);  //accendi la ventilazione
+        if(fheat==0){
+          heating=LOW;  //cambia lo stato del riscaldamento in spento
+          digitalWrite(8,heating);  //spegni il riscaldamento
+          target=millis()+hstartup;  //imposta il timer di startup riscaldamento
+        }
+        else if(fheat==1){
+          heating=HIGH;  //cambia lo stato del riscaldamento in acceso
+          digitalWrite(8,heating);  //accendi il riscaldamento
+          target=millis()+hstartup;  //imposta il timer di startup riscaldamento
+        }
+        else if(fheat==2){
+          heating=HIGH;  //cambia lo stato del riscaldamento in acceso
+          digitalWrite(8,heating);  //accendi il riscaldamento
+          target=millis()+fstartup;  //imposta il timer di startup riscaldamento
+        }
         mode=2;  //setta il valore dello stato del sistema a 2
-        target=millis()+hstartup;  //imposta il timer di startup riscaldamento
-        light=millis()+blon;  //imposta il timer di accensione display
-        fanon=hstartup+hidle;  //setta il tempo di accensione ventilazione per l intero ciclo
-        fan=millis()+fanon;  //imposta il timer di accensione ventilazione camera di fermentazione
-        fermtempaverage=-30;  //setta il valore della temperatura media al massimo
+        if(fff==0){
+          ventilation=0;  //setta la ventilazione a 0% pwm
+          analogWrite(5,ventilation);  //spegni la ventilazione
+        }
+        else if(fff==1||fff==2){
+          ventilation=255;  //setta la ventilazione a 100% pwm
+          analogWrite(5,ventilation);  //accendi la ventilazione
+        }
         hscount++;  //aumenta il contatore accensioni
         if(hscount>99999999){  //se il contatore accensioni arriva a 100
           hscount=1;  //fai ripartire il contatore accensioni da 1
