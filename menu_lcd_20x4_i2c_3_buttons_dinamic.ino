@@ -1539,10 +1539,10 @@ void loop(){
         heating=LOW;  //cambia lo stato del riscaldamento in spento
         digitalWrite(8,heating);  //spegni il riscaldamento
         mode=4;  //setta il valore dello stato del sistema a 4
-        if(fcold==0||fcold==1){
-          target=millis()+hidle;  //imposta il timer di standby raffreddamento
+        if(fheat==0||fheat==1){
+          target=millis()+hidle;  //imposta il timer di standby riscaldamento
         }
-        else if(fcold==2){
+        else if(fheat==2){
           target=millis()+fidle;
         }
         if(fff==0||fff==1){
@@ -1555,7 +1555,7 @@ void loop(){
         }
       }
     }
-    else{  //se il raffreddamento e il riscaldamento sono spenti
+    else if(refrigeration==LOW&&heating==LOW){  //se il raffreddamento e il riscaldamento sono spenti
       if(fermtempaverage<maxtemp&&fermtempaverage>mintemp){  //se la temperatura media è compresa nell'intervallo impostato
         if(fcold==0||fcold==1||fheat==0||fheat==1){
           refrigeration=LOW;  //cambia lo stato del raffreddamento in spento
@@ -1564,12 +1564,16 @@ void loop(){
           digitalWrite(8,heating);  //spegni il riscaldamento
           target=millis()+sbidle;
         }
-        if(fcold==2){
+        else if(fcold==2){
           refrigeration=HIGH;  //cambia lo stato del raffreddamento in spento
           digitalWrite(7,refrigeration);  //spegni il raffreddamento
+          heating=LOW;  //cambia lo stato del riscaldamento in spento
+          digitalWrite(8,heating);  //spegni il riscaldamento
           target=millis()+fstartup;
         }
-        if(fheat==2){
+        else if(fheat==2){
+          refrigeration=LOW;  //cambia lo stato del raffreddamento in spento
+          digitalWrite(7,refrigeration);  //spegni il raffreddamento
           heating=HIGH;  //cambia lo stato del riscaldamento in spento
           digitalWrite(8,heating);  //spegni il riscaldamento
           target=millis()+fstartup;
@@ -1585,20 +1589,37 @@ void loop(){
         }
       }
       else if(fermtempaverage>maxtemp){  //se la temperatura media è superiore alla temperatura massima impostata
-        if(fcold==0){
-          refrigeration=LOW;
-          digitalWrite(7,refrigeration);
-          target=millis()+cstartup;  //imposta il timer di startup raffreddamento
+        if(fcold!=0){
+          if(fcold==1){
+            refrigeration=HIGH;
+            digitalWrite(7,refrigeration);
+            heating=LOW;
+            digitalWrite(8,heating);
+            target=millis()+cstartup;
+          }
+          else if(fcold==2){
+            refrigeration=HIGH;
+            digitalWrite(7,refrigeration);
+            heating=LOW;
+            digitalWrite(8,heating);
+            target=millis()+fstartup;
+          }
         }
-        else if(fcold==1){
-          refrigeration=HIGH;  //cambia lo stato del raffreddamento in acceso
-          digitalWrite(7,HIGH);  //accendi il raffreddamento
-          target=millis()+cstartup;  //imposta il timer di startup raffreddamento
-        }
-        else if(fcold==2){
-          refrigeration=HIGH;  //cambia lo stato del raffreddamento in acceso
-          digitalWrite(7,HIGH);  //accendi il raffreddamento
-          target=millis()+fstartup;
+        else{
+          if(fheat==0||fheat==1){
+            refrigeration=LOW;
+            digitalWrite(7,refrigeration);
+            heating=LOW;
+            digitalWrite(7,heating);
+            target=millis()+sbidle;
+          }
+          else if(fheat==2){
+            refrigeration=LOW;
+            digitalWrite(7,refrigeration);
+            heating=HIGH;
+            digitalWrite(7,heating);
+            target=millis()+fstartup;
+          }
         }
         mode=1;  //setta il valore dello stato del sistema a 1
         if(fff==0){
