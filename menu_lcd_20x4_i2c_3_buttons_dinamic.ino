@@ -1564,12 +1564,15 @@ void loop(){
           digitalWrite(8,heating);  //spegni il riscaldamento
           target=millis()+sbidle;
         }
-        if(fcold==2||fheat==2){
-          refrigeration=LOW;  //cambia lo stato del raffreddamento in spento
+        if(fcold==2){
+          refrigeration=HIGH;  //cambia lo stato del raffreddamento in spento
           digitalWrite(7,refrigeration);  //spegni il raffreddamento
-          heating=LOW;  //cambia lo stato del riscaldamento in spento
+          target=millis()+fstartup;
+        }
+        if(fheat==2){
+          heating=HIGH;  //cambia lo stato del riscaldamento in spento
           digitalWrite(8,heating);  //spegni il riscaldamento
-          target=millis()+fidle;
+          target=millis()+fstartup;
         }
         mode=5;  //setta il valore dello stato del sistema a 5
         if(fff==0||fff==1){
