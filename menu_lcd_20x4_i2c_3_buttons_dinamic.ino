@@ -131,7 +131,6 @@ int hscount=0;  //contatore accensioni riscaldamento
 int cicount=0;  //contatore stanbdy raffreddamento
 int hicount=0;  //contatore standby riscaldamento
 int sicount=0;  //contatore standby generico
-int fcfcount=0;  //contatore accensioni ventilazione camera fermentazione
 int fcscount=0;  //contatore accensioni forzate raffreddamento
 int fhscount=0;  //contatore accensioni forzate riscaldamento
 int fffcount=0;  //contatore accensioni forzate ventilazione camera fermentazione
@@ -1508,6 +1507,7 @@ void loop(){
         else if(fff==2){
           ventilation=255;  //setta la ventilazione a 100% pwm
           analogWrite(5,ventilation);  //accendi la ventilazione
+          fffscount++;
         }
       }
       else if(heating==HIGH){  //se il riscaldamento è acceso
@@ -1515,9 +1515,11 @@ void loop(){
         digitalWrite(8,heating);  //spegni il riscaldamento
         if(fheat==0||fheat==1){
           target=millis()+hidle;  //imposta il timer di standby riscaldamento
+          hicount++;
         }
         else if(fheat==2){
           target=millis()+fidle;
+          ficount++;
         }
         mode=4;  //setta il valore dello stato del sistema a 4
         if(fff==0||fff==1){
@@ -1527,6 +1529,7 @@ void loop(){
         else if(fff==2){
           ventilation=255;  //setta la ventilazione a 100% pwm
           analogWrite(5,ventilation);  //accendi la ventilazione
+          fffscount++;
         }
       }
     }
@@ -1539,6 +1542,7 @@ void loop(){
           digitalWrite(8,heating);  //spegni il riscaldamento
           target=millis()+sbidle;
           mode=5;
+          sicount++;
           if(fff==0||fff==1){
             ventilation=0;  //setta la ventilazione a 0% pwm
             analogWrite(5,ventilation);  //spegni la ventilazione
@@ -1546,6 +1550,7 @@ void loop(){
           else if(fff==2){
             ventilation=255;  //setta la ventilazione a 100% pwm
             analogWrite(5,ventilation);  //accendi la ventilazione
+            fffscount++;
           }
         }
         else if(fcold==2){
@@ -1555,6 +1560,7 @@ void loop(){
           digitalWrite(8,heating);  //spegni il riscaldamento
           target=millis()+fstartup;
           mode=1;
+          fcscount++;
           if(fff==0){
             ventilation=0;  //setta la ventilazione a 0% pwm
             analogWrite(5,ventilation);  //spegni la ventilazione
@@ -1562,8 +1568,12 @@ void loop(){
           else if(fff==1||fff==2){
             ventilation=255;  //setta la ventilazione a 100% pwm
             analogWrite(5,ventilation);  //accendi la ventilazione
+            if(fff==1){
+              ffscount++;
+            }
+            else if(fff==2){
+              fffscount++;
           }
-          fcscount++;
         }
         else if(fheat==2){
           refrigeration=LOW;  //cambia lo stato del raffreddamento in spento
@@ -1572,6 +1582,7 @@ void loop(){
           digitalWrite(8,heating);  //spegni il riscaldamento
           target=millis()+fstartup;
           mode=2;
+          fhscount++;
           if(fff==0){
             ventilation=0;  //setta la ventilazione a 0% pwm
             analogWrite(5,ventilation);  //spegni la ventilazione
@@ -1579,8 +1590,13 @@ void loop(){
           else if(fff==1||fff==2){
             ventilation=255;  //setta la ventilazione a 100% pwm
             analogWrite(5,ventilation);  //accendi la ventilazione
+            if(fff==1){
+              ffscount++;
+            }
+            else if(fff==2){
+              fffscount++;
+            }
           }
-          fhscount++;
         }
       }
       else if(fermtempaverage>maxtemp){  //se la temperatura media è superiore alla temperatura massima impostata
@@ -1609,6 +1625,12 @@ void loop(){
           else if(fff==1||fff==2){
             ventilation=255;  //setta la ventilazione a 100% pwm
             analogWrite(5,ventilation);  //accendi la ventilazione
+            if(fff==1){
+              ffscount++;
+            }
+            else if(fff==2){
+              fffscount++;
+            }
           }
         }
         else{
@@ -1619,6 +1641,7 @@ void loop(){
             digitalWrite(7,heating);
             target=millis()+sbidle;
             mode=5;
+            sicount++;
             if(fff==0||fff==1){
               ventilation=0;  //setta la ventilazione a 0% pwm
               analogWrite(5,ventilation);  //spegni la ventilazione
@@ -1626,6 +1649,7 @@ void loop(){
             else if(fff==2){
               ventilation=255;  //setta la ventilazione a 100% pwm
               analogWrite(5,ventilation);  //accendi la ventilazione
+              fffscount++;
             }
           }
           else if(fheat==2){
@@ -1635,6 +1659,7 @@ void loop(){
             digitalWrite(7,heating);
             target=millis()+fstartup;
             mode=2;
+            fhscount++;
             if(fff==0){
               ventilation=0;  //setta la ventilazione a 0% pwm
               analogWrite(5,ventilation);  //spegni la ventilazione
@@ -1642,8 +1667,13 @@ void loop(){
             else if(fff==1||fff==2){
               ventilation=255;  //setta la ventilazione a 100% pwm
               analogWrite(5,ventilation);  //accendi la ventilazione
+              if(fff==1){
+                ffscount++;
+              }
+              else if(fff==2){
+                fffscount++;
+              }
             }
-            fhscount++;
           }
         }
       }
@@ -1673,6 +1703,12 @@ void loop(){
           else if(fff==1||fff==2){
             ventilation=255;  //setta la ventilazione a 100% pwm
             analogWrite(5,ventilation);  //accendi la ventilazione
+            if(fff==1){
+              ffscount++;
+            }
+            else if(fff==2){
+              fffscount++;
+            }
           }
         }
         else{
@@ -1683,6 +1719,7 @@ void loop(){
             digitalWrite(8,heating);  //accendi il riscaldamento
             target=millis()+sbidle;  //imposta il timer di startup riscaldamento
             mode=5;
+            sicount++;
             if(fff==0||fff==1){
               ventilation=0;  //setta la ventilazione a 0% pwm
               analogWrite(5,ventilation);  //spegni la ventilazione
@@ -1690,6 +1727,7 @@ void loop(){
             else if(fff==2){
               ventilation=255;  //setta la ventilazione a 100% pwm
               analogWrite(5,ventilation);  //accendi la ventilazione
+              fffscount++;
             }
           }
           else if(fcold==2){
@@ -1699,6 +1737,7 @@ void loop(){
             digitalWrite(7,heating);
             target=millis()+fstartup;
             mode=1;
+            fcscount++;
             if(fff==0){
               ventilation=0;  //setta la ventilazione a 0% pwm
               analogWrite(5,ventilation);  //spegni la ventilazione
@@ -1706,8 +1745,13 @@ void loop(){
             else if(fff==1||fff==2){
               ventilation=255;  //setta la ventilazione a 100% pwm
               analogWrite(5,ventilation);  //accendi la ventilazione
+              if(fff==1){
+                ffscount++;
+              }
+              else if(fff==2){
+                fffscount++;
+              }
             }
-            fcscount++;
           }
         }
       }
