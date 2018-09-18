@@ -11,13 +11,13 @@ Components list:
 - ADS1115 16 bit (ADC)
 - Eliwell PTC temperature probe.
 
-Arranged for:
+Suits for:
 - cooling
 - heating
-- CPU ventilation
-- fermentation chamber ventilation.
+- fermentation chamber ventilation
+- CPU ventilation.
 
-Working parameters can be activated and modified from LCD display.
+Working parameters can be activated/deactivated and modified from LCD display.
 
 Next steps:
 1) set up sketch for PT100/NTC temperature probe
