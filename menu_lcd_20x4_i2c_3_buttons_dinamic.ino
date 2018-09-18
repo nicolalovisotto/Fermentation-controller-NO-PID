@@ -131,9 +131,9 @@ int hscount=0;  //contatore accensioni riscaldamento
 int cicount=0;  //contatore stanbdy raffreddamento
 int hicount=0;  //contatore standby riscaldamento
 int sicount=0;  //contatore standby generico
-int fscount=0;  //contatore accensioni ventilazione camera fermentazione
-int fcoldcount=0;  //contatore accensioni forzate raffreddamento
-int fheatcount=0;  //contatore accensioni forzate riscaldamento
+int fcfcount=0;  //contatore accensioni ventilazione camera fermentazione
+int fcscount=0;  //contatore accensioni forzate raffreddamento
+int fhscount=0;  //contatore accensioni forzate riscaldamento
 int fffcount=0;  //contatore accensioni forzate ventilazione camera fermentazione
 int fcfcount=0;  //contatore accensioni forzate ventilazione cpu
 
@@ -1492,13 +1492,15 @@ void loop(){
       if(refrigeration==HIGH){  //se il raffreddamento è acceso
         refrigeration=LOW;  //cambia lo stato del raffreddamento in spento
         digitalWrite(7,refrigeration);  //spegni il raffreddamento
-        mode=3;  //setta il valore dello stato del sistema a 3
         if(fcold==0||fcold==1){
           target=millis()+cidle;  //imposta il timer di standby raffreddamento
+          cicount++;
         }
         else if(fcold==2){
           target=millis()+fidle;
+          ficount++;
         }
+        mode=3;  //setta il valore dello stato del sistema a 3
         if(fff==0||fff==1){
           ventilation=0;  //setta la ventilazione a 0% pwm
           analogWrite(5,ventilation);  //spegni la ventilazione
@@ -1511,13 +1513,13 @@ void loop(){
       else if(heating==HIGH){  //se il riscaldamento è acceso
         heating=LOW;  //cambia lo stato del riscaldamento in spento
         digitalWrite(8,heating);  //spegni il riscaldamento
-        mode=4;  //setta il valore dello stato del sistema a 4
         if(fheat==0||fheat==1){
           target=millis()+hidle;  //imposta il timer di standby riscaldamento
         }
         else if(fheat==2){
           target=millis()+fidle;
         }
+        mode=4;  //setta il valore dello stato del sistema a 4
         if(fff==0||fff==1){
           ventilation=0;  //setta la ventilazione a 0% pwm
           analogWrite(5,ventilation);  //spegni la ventilazione
@@ -1536,6 +1538,15 @@ void loop(){
           heating=LOW;  //cambia lo stato del riscaldamento in spento
           digitalWrite(8,heating);  //spegni il riscaldamento
           target=millis()+sbidle;
+          mode=5;
+          if(fff==0||fff==1){
+            ventilation=0;  //setta la ventilazione a 0% pwm
+            analogWrite(5,ventilation);  //spegni la ventilazione
+          }
+          else if(fff==2){
+            ventilation=255;  //setta la ventilazione a 100% pwm
+            analogWrite(5,ventilation);  //accendi la ventilazione
+          }
         }
         else if(fcold==2){
           refrigeration=HIGH;  //cambia lo stato del raffreddamento in spento
@@ -1543,6 +1554,16 @@ void loop(){
           heating=LOW;  //cambia lo stato del riscaldamento in spento
           digitalWrite(8,heating);  //spegni il riscaldamento
           target=millis()+fstartup;
+          mode=1;
+          if(fff==0){
+            ventilation=0;  //setta la ventilazione a 0% pwm
+            analogWrite(5,ventilation);  //spegni la ventilazione
+          }
+          else if(fff==1||fff==2){
+            ventilation=255;  //setta la ventilazione a 100% pwm
+            analogWrite(5,ventilation);  //accendi la ventilazione
+          }
+          fcscount++;
         }
         else if(fheat==2){
           refrigeration=LOW;  //cambia lo stato del raffreddamento in spento
@@ -1550,15 +1571,16 @@ void loop(){
           heating=HIGH;  //cambia lo stato del riscaldamento in spento
           digitalWrite(8,heating);  //spegni il riscaldamento
           target=millis()+fstartup;
-        }
-        mode=5;  //setta il valore dello stato del sistema a 5
-        if(fff==0||fff==1){
-          ventilation=0;  //setta la ventilazione a 0% pwm
-          analogWrite(5,ventilation);  //spegni la ventilazione
-        }
-        else if(fff==2){
-          ventilation=255;  //setta la ventilazione a 100% pwm
-          analogWrite(5,ventilation);  //accendi la ventilazione
+          mode=2;
+          if(fff==0){
+            ventilation=0;  //setta la ventilazione a 0% pwm
+            analogWrite(5,ventilation);  //spegni la ventilazione
+          }
+          else if(fff==1||fff==2){
+            ventilation=255;  //setta la ventilazione a 100% pwm
+            analogWrite(5,ventilation);  //accendi la ventilazione
+          }
+          fhscount++;
         }
       }
       else if(fermtempaverage>maxtemp){  //se la temperatura media è superiore alla temperatura massima impostata
@@ -1569,6 +1591,7 @@ void loop(){
             heating=LOW;
             digitalWrite(8,heating);
             target=millis()+cstartup;
+            cscount++;
           }
           else if(fcold==2){
             refrigeration=HIGH;
@@ -1576,6 +1599,16 @@ void loop(){
             heating=LOW;
             digitalWrite(8,heating);
             target=millis()+fstartup;
+            fcscount++;
+          }
+          mode=1;
+          if(fff==0){
+            ventilation=0;  //setta la ventilazione a 0% pwm
+            analogWrite(5,ventilation);  //spegni la ventilazione
+          }
+          else if(fff==1||fff==2){
+            ventilation=255;  //setta la ventilazione a 100% pwm
+            analogWrite(5,ventilation);  //accendi la ventilazione
           }
         }
         else{
@@ -1585,6 +1618,15 @@ void loop(){
             heating=LOW;
             digitalWrite(7,heating);
             target=millis()+sbidle;
+            mode=5;
+            if(fff==0||fff==1){
+              ventilation=0;  //setta la ventilazione a 0% pwm
+              analogWrite(5,ventilation);  //spegni la ventilazione
+            }
+            else if(fff==2){
+              ventilation=255;  //setta la ventilazione a 100% pwm
+              analogWrite(5,ventilation);  //accendi la ventilazione
+            }
           }
           else if(fheat==2){
             refrigeration=LOW;
@@ -1592,20 +1634,17 @@ void loop(){
             heating=HIGH;
             digitalWrite(7,heating);
             target=millis()+fstartup;
+            mode=2;
+            if(fff==0){
+              ventilation=0;  //setta la ventilazione a 0% pwm
+              analogWrite(5,ventilation);  //spegni la ventilazione
+            }
+            else if(fff==1||fff==2){
+              ventilation=255;  //setta la ventilazione a 100% pwm
+              analogWrite(5,ventilation);  //accendi la ventilazione
+            }
+            fhscount++;
           }
-        }
-        mode=1;  //setta il valore dello stato del sistema a 1
-        if(fff==0){
-          ventilation=0;  //setta la ventilazione a 0% pwm
-          analogWrite(5,ventilation);  //spegni la ventilazione
-        }
-        else if(fff==1||fff==2){
-          ventilation=255;  //setta la ventilazione a 100% pwm
-          analogWrite(5,ventilation);  //accendi la ventilazione
-        }
-        cscount++;  //aumenta il contatore accensioni
-        if(cscount>99999999){  //se il contatore accensioni arriva a 100
-          cscount=1;  //fai ripartire il contatore accensioni da 1
         }
       }
       else if(fermtempaverage<mintemp){  //se la temperatura media è inferiore alla temperatura minima impostata
@@ -1616,6 +1655,7 @@ void loop(){
             heating=HIGH;  //cambia lo stato del riscaldamento in spento
             digitalWrite(8,heating);  //spegni il riscaldamento
             target=millis()+hstartup;  //imposta il timer di startup riscaldamento
+            hscount++;
           }
           else if(fheat==2){
             refrigeration=LOW;
@@ -1623,6 +1663,16 @@ void loop(){
             heating=HIGH;  //cambia lo stato del riscaldamento in acceso
             digitalWrite(8,heating);  //accendi il riscaldamento
             target=millis()+fstartup;  //imposta il timer di startup riscaldamento
+            fhscount++;
+          }
+          mode=2;
+          if(fff==0){
+            ventilation=0;  //setta la ventilazione a 0% pwm
+            analogWrite(5,ventilation);  //spegni la ventilazione
+          }
+          else if(fff==1||fff==2){
+            ventilation=255;  //setta la ventilazione a 100% pwm
+            analogWrite(5,ventilation);  //accendi la ventilazione
           }
         }
         else{
@@ -1632,6 +1682,15 @@ void loop(){
             heating=LOW;  //cambia lo stato del riscaldamento in acceso
             digitalWrite(8,heating);  //accendi il riscaldamento
             target=millis()+sbidle;  //imposta il timer di startup riscaldamento
+            mode=5;
+            if(fff==0||fff==1){
+              ventilation=0;  //setta la ventilazione a 0% pwm
+              analogWrite(5,ventilation);  //spegni la ventilazione
+            }
+            else if(fff==2){
+              ventilation=255;  //setta la ventilazione a 100% pwm
+              analogWrite(5,ventilation);  //accendi la ventilazione
+            }
           }
           else if(fcold==2){
             refrigeration=HIGH;
@@ -1639,19 +1698,17 @@ void loop(){
             heating=LOW;
             digitalWrite(7,heating);
             target=millis()+fstartup;
+            mode=1;
+            if(fff==0){
+              ventilation=0;  //setta la ventilazione a 0% pwm
+              analogWrite(5,ventilation);  //spegni la ventilazione
+            }
+            else if(fff==1||fff==2){
+              ventilation=255;  //setta la ventilazione a 100% pwm
+              analogWrite(5,ventilation);  //accendi la ventilazione
+            }
+            fcscount++;
           }
-        mode=2;  //setta il valore dello stato del sistema a 2
-        if(fff==0){
-          ventilation=0;  //setta la ventilazione a 0% pwm
-          analogWrite(5,ventilation);  //spegni la ventilazione
-        }
-        else if(fff==1||fff==2){
-          ventilation=255;  //setta la ventilazione a 100% pwm
-          analogWrite(5,ventilation);  //accendi la ventilazione
-        }
-        hscount++;  //aumenta il contatore accensioni
-        if(hscount>99999999){  //se il contatore accensioni arriva a 100
-          hscount=1;  //fai ripartire il contatore accensioni da 1
         }
       }
     }
