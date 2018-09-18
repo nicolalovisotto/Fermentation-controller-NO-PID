@@ -1609,21 +1609,37 @@ void loop(){
         }
       }
       else if(fermtempaverage<mintemp){  //se la temperatura media è inferiore alla temperatura minima impostata
-        if(fheat==0){
-          heating=LOW;  //cambia lo stato del riscaldamento in spento
-          digitalWrite(8,heating);  //spegni il riscaldamento
-          target=millis()+hstartup;  //imposta il timer di startup riscaldamento
+        if(fheat!=0){
+          if(fheat==1){
+            refrigeration=LOW;
+            digitalWrite(7,refrigeration);
+            heating=HIGH;  //cambia lo stato del riscaldamento in spento
+            digitalWrite(8,heating);  //spegni il riscaldamento
+            target=millis()+hstartup;  //imposta il timer di startup riscaldamento
+          }
+          else if(fheat==2){
+            refrigeration=LOW;
+            digitalWrite(7,refrigeration);
+            heating=HIGH;  //cambia lo stato del riscaldamento in acceso
+            digitalWrite(8,heating);  //accendi il riscaldamento
+            target=millis()+fstartup;  //imposta il timer di startup riscaldamento
+          }
         }
-        else if(fheat==1){
-          heating=HIGH;  //cambia lo stato del riscaldamento in acceso
-          digitalWrite(8,heating);  //accendi il riscaldamento
-          target=millis()+hstartup;  //imposta il timer di startup riscaldamento
-        }
-        else if(fheat==2){
-          heating=HIGH;  //cambia lo stato del riscaldamento in acceso
-          digitalWrite(8,heating);  //accendi il riscaldamento
-          target=millis()+fstartup;  //imposta il timer di startup riscaldamento
-        }
+        else{
+          if(fcold==0||fcold==1){
+            refrigeration=LOW;
+            digitalWrite(7,refrigeration);
+            heating=LOW;  //cambia lo stato del riscaldamento in acceso
+            digitalWrite(8,heating);  //accendi il riscaldamento
+            target=millis()+sbidle;  //imposta il timer di startup riscaldamento
+          }
+          else if(fcold==2){
+            refrigeration=HIGH;
+            digitalWrite(7,refrigeration);
+            heating=LOW;
+            digitalWrite(7,heating);
+            target=millis()+fstartup;
+          }
         mode=2;  //setta il valore dello stato del sistema a 2
         if(fff==0){
           ventilation=0;  //setta la ventilazione a 0% pwm
