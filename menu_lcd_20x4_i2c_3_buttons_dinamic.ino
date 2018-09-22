@@ -50,6 +50,7 @@ int mod1=0;  //variabile utilizzata per scorrere i parametri
 int mod2=0;  //variabile utilizzata per scorrere i parametri
 int mod3=0;  //variabile utilizzata per scorrere i parametri
 int mod4=0;  //variabile utilizzata per scorrere i parametri
+int mod5=0;  //variabile utilizzata per scorrere i parametri
 
 /*VISUALIZZAZIONE SINGOLA A DISPLAY*/
 int printed=0;  //variabile utilizzata per scrivere una sola volta un menù o un opzione
@@ -131,10 +132,10 @@ int hscount=0;  //contatore accensioni riscaldamento
 int cicount=0;  //contatore stanbdy raffreddamento
 int hicount=0;  //contatore standby riscaldamento
 int sicount=0;  //contatore standby generico
+int ffscount=0;  //contatore accensioni ventilazione camera fermentazione
 int fcscount=0;  //contatore accensioni forzate raffreddamento
 int fhscount=0;  //contatore accensioni forzate riscaldamento
-int fffcount=0;  //contatore accensioni forzate ventilazione camera fermentazione
-int fcfcount=0;  //contatore accensioni forzate ventilazione cpu
+int ficount=0;  //contatore standby forzato generico
 
 /*RILEVAZIONE SEGNALE ANALOGICO*/
 int16_t Val;  //valore analogico sonda di temperatura
@@ -195,6 +196,7 @@ void loop(){
     mod2=0;  //resetta la variabile
     mod3=0;  //resetta la variabile
     mod4=0;  //resetta la variabile
+    mod5=0;  //resetta la variabile
     printed=0;  //resetta la variabile
   }
   /*COMANDI PER SCORRERE MENU E PARAMETRI*/
@@ -211,6 +213,7 @@ void loop(){
         mod2++;  //incrementa la variabile
         mod3++;  //incrementa la variabile
         mod4++;  //incrementa la variabile
+        mod5++;  //incrementa la variabile
       }
       lcd.setBacklight(HIGH);  //accendi illuminazione lcd
       light=millis()+blon;  //imposta timer illuminazione display lcd
@@ -228,13 +231,14 @@ void loop(){
         mod2--;  //decrementa la variabile
         mod3--;  //decrementa la variabile
         mod4--;  //decrementa la variabile
+        mod5--;  //decrementa la variabile
       }
       lcd.setBacklight(HIGH);  //accendi illuminazione lcd
       light=millis()+blon;  //imposta timer illuminazione display lcd
       printed=0;  //resetta la variabile
     }
   }
-  if(stats>14||stats<0){
+  if(stats>15||stats<0){
     stats=0;
   }
   /*SCHERMATA PRINCIPALE*/
@@ -242,39 +246,41 @@ void loop(){
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
-    lcd.print("Temperature:");  //scrivi
-    lcd.setCursor(12,0);  //posiziona il cursore a
-    lcd.print(fermtemp,2);  //scrivi la variabile fermtemp con due cifre dopo la virgola
+    lcd.print("MAIN MENU           ");  //scrivi
     lcd.setCursor(0,1);  //posiziona il cursore a
+    lcd.print("Temperature:");  //scrivi
+    lcd.setCursor(12,1);  //posiziona il cursore a
+    lcd.print(fermtemp,2);  //scrivi la variabile fermtemp con due cifre dopo la virgola
+    lcd.setCursor(0,2);  //posiziona il cursore a
+    lcd.print("Setpoints:");  //scrivi
+    lcd.setCursor(9,2);  //posiziona il cursore a
+    lcd.print(mintemp,1);  //scrivi
+    lcd.setCursor(13,2);  //posiziona il cursore a
+    lcd.print("-");  //scrivi
+    lcd.setCursor(14,2);  //posiziona il cursore a
+    lcd.print(maxtemp,1);  //scrivi
+    lcd.setCursor(0,3);  //posiziona il cursore a
     lcd.print("Status:");  //scrivi
     if(mode==1){  //se lo stato del sistema è uguale a 1
-      lcd.setCursor(7,1);  //posiziona il cursore a
+      lcd.setCursor(7,3);  //posiziona il cursore a
       lcd.print("cold on");  //scrivi
     }
     else if(mode==2){  //se lo stato del sistema è uguale a 2
-      lcd.setCursor(7,1);  //posiziona il cursore a
+      lcd.setCursor(7,3);  //posiziona il cursore a
       lcd.print("heat on");  //scrivi
     }
     else if(mode==3){  //se lo stato del sistema è uguale a 3
-      lcd.setCursor(7,1);  //posiziona il cursore a
+      lcd.setCursor(7,3);  //posiziona il cursore a
       lcd.print("cooling");  //scrivi
     }
     else if(mode==4){  //se lo stato del sistema è uguale a 4
-      lcd.setCursor(7,1);  //posiziona il cursore a
+      lcd.setCursor(7,3);  //posiziona il cursore a
       lcd.print("warming");  //scrivi
     }
     else if(mode==5){  //se lo stato del sistema è uguale a 5
-      lcd.setCursor(7,1);  //posiziona il cursore a
+      lcd.setCursor(7,3);  //posiziona il cursore a
       lcd.print("off");  //scrivi
     }
-    lcd.setCursor(0,2);  //posiziona il cursore a
-    lcd.print("Cold cycles:");  //scrivi
-    lcd.setCursor(12,2);  //posiziona il cursore a
-    lcd.print(cscount);  //scrivi il contatore delle accensioni ciclo raffreddamento
-    lcd.setCursor(0,3);  //posiziona il cursore a
-    lcd.print("Heat cycles:");  //scrivi
-    lcd.setCursor(12,3);  //posiziona il cursore a
-    lcd.print(hscount);  //scrivi il contatore delle accensioni ciclo riscaldamento
     printed=1;  //setta la variabile a 1 per visualizzare una sola volta
     Serial.println(enter1);
     Serial.println(stats);
@@ -285,6 +291,19 @@ void loop(){
   }
   /*VISUALIZZAZIONE MENU*/
   if(enter1==0&&stats==1&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 1  e printed è uguale a 0
+    menu=millis()+home;  //imposta il timer di ritorno al menu principale
+    lcd.clear();  //pulisci lo schermo
+    lcd.setCursor(0,0);  //posiziona il cursore a
+    lcd.print("COUNTERS STATS      ");  //scrivi
+    lcd.setCursor(0,1);  //posiziona il cursore a
+    lcd.print("enter to visualize  ");  //scrivi
+    lcd.setCursor(0,2);  //posiziona il cursore a
+    lcd.print("                    ");  //scrivi
+    lcd.setCursor(0,3);  //posiziona il cursore a
+    lcd.print("                    ");  //scrivi
+    printed=1;  //setta la variabile a 1 per visualizzare una sola volta
+  }
+  if(enter1==0&&stats==2&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 2 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -303,7 +322,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==0&&stats==2&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 2 e printed è uguale a 0
+  if(enter1==0&&stats==3&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 3 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -322,7 +341,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==0&&stats==3&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 3 e printed è uguale a 0
+  if(enter1==0&&stats==4&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 4 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -341,7 +360,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==0&&stats==4&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 4 e printed è uguale a 0
+  if(enter1==0&&stats==5&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 5 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -360,7 +379,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==0&&stats==5&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 5 e printed è uguale a 0
+  if(enter1==0&&stats==6&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 6 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -379,7 +398,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==0&&stats==6&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 6 e printed è uguale a 0
+  if(enter1==0&&stats==7&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 7 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -398,7 +417,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==0&&stats==7&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 7 e printed è uguale a 0
+  if(enter1==0&&stats==8&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 8 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -417,7 +436,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==0&&stats==8&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 8 e printed è uguale a 0
+  if(enter1==0&&stats==9&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 9 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -436,7 +455,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==0&&stats==9&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 9 e printed è uguale a 0
+  if(enter1==0&&stats==10&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 10 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -455,7 +474,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==0&&stats==10&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 10 e printed è uguale a 0
+  if(enter1==0&&stats==11&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 11 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -474,7 +493,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==0&&stats==11&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 11 e printed è uguale a 0
+  if(enter1==0&&stats==12&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 12 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -493,7 +512,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==0&&stats==12&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 12 e printed è uguale a 0
+  if(enter1==0&&stats==13&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 13 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -512,7 +531,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==0&&stats==13&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 13 e printed è uguale a 0
+  if(enter1==0&&stats==14&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 14 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -531,7 +550,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==0&&stats==14&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 14 e printed è uguale a 0
+  if(enter1==0&&stats==15&&printed==0){  //se enter1 è uguale a 0 stats è uguale a 15 e printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     lcd.clear();  //pulisci lo schermo
     lcd.setCursor(0,0);  //posiziona il cursore a
@@ -550,8 +569,26 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  /*COMANDI PER ENTRARE NELLA MODALITA' MODIFICA*/  //necessario perché VISUALIZZAZIONE MENU viene scritta una sola volta
+  /*COMANDI PER ENTRARE NELLA MODALITA' VISUALIZZA STATISTICHE CONTATORI*/  //necessario perché il blocco VISUALIZZAZIONE MENU viene eseguito una sola volta
   if(enter1==0&&stats==1){  //se enter1 è uguale a 0 stats è uguale a 1
+    val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
+    if(val_forward!=forwardstate){  //se l'input del pulsante è diverso dallo stato del pulsante
+      forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
+      if(forwardstate==HIGH){  //se lo stato del pulsante è HIGH
+        lcd.setBacklight(HIGH);  //accendi illuminazione lcd
+        light=millis()+blon;  //imposta il timer di accensione display
+        mod1=0;  //resetta la variabile
+        mod2=0;  //resetta la variabile
+        mod3=0;  //resetta la variabile
+        mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
+        enter1=1;  //setta la variabile a 1
+        printed=0;  //resetta la variabile
+      }
+    }
+  }
+  /*COMANDI PER ENTRARE NELLA MODALITA' MODIFICA*/  //necessario perché il blocco VISUALIZZAZIONE MENU viene eseguito una sola volta
+  if(enter1==0&&stats==2){  //se enter1 è uguale a 0 stats è uguale a 2
     val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
     if(val_forward!=forwardstate){  //se l'input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
@@ -567,12 +604,13 @@ void loop(){
         }
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
-        enter1=1;  //setta la variabile a 1
+        mod5=0;  //resetta la variabile
+        enter1=2;  //setta la variabile a 2
         printed=0;  //resetta la variabile
       }
     }
   }
-  if(enter1==0&&stats==2){  //se enter1 è uguale a 0 stats è uguale a 1
+  if(enter1==0&&stats==3){  //se enter1 è uguale a 0 stats è uguale a 3
     val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
     if(val_forward!=forwardstate){  //se l'input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
@@ -588,12 +626,13 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
-        enter1=2;  //setta la variabile a 2
+        mod5=0;  //resetta la variabile
+        enter1=3;  //setta la variabile a 3
         printed=0;  //resetta la variabile
       }
     }
   }
-  if(enter1==0&&stats==3){  //se enter1 è uguale a 0 stats è uguale a 3
+  if(enter1==0&&stats==4){  //se enter1 è uguale a 0 stats è uguale a 4
     val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
     if(val_forward!=forwardstate){  //se l'input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
@@ -609,12 +648,13 @@ void loop(){
         }
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
-        enter1=3;  //setta la variabile a 3
+        mod5=0;  //resetta la variabile
+        enter1=4;  //setta la variabile a 4
         printed=0;  //resetta la variabile
       }
     }
   }
-  if(enter1==0&&stats==4){  //se enter1 è uguale a 0 stats è uguale a 4
+  if(enter1==0&&stats==5){  //se enter1 è uguale a 0 stats è uguale a 5
     val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
     if(val_forward!=forwardstate){  //se l'input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
@@ -630,12 +670,13 @@ void loop(){
         }
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
-        enter1=4;  //setta la variabile a 4
+        mod5=0;  //resetta la variabile
+        enter1=5;  //setta la variabile a 5
         printed=0;  //resetta la variabile
       }
     }
   }
-  if(enter1==0&&stats==5){  //se enter1 è uguale a 0 stats è uguale a 5
+  if(enter1==0&&stats==6){  //se enter1 è uguale a 0 stats è uguale a 6
     val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
     if(val_forward!=forwardstate){  //se l'input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
@@ -651,12 +692,13 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
-        enter1=5;  //setta la variabile a 5
+        mod5=0;  //resetta la variabile
+        enter1=6;  //setta la variabile a 6
         printed=0;  //resetta la variabile
       }
     }
   }
-  if(enter1==0&&stats==6){  //se enter1 è uguale a 0 stats è uguale a 6
+  if(enter1==0&&stats==7){  //se enter1 è uguale a 0 stats è uguale a 7
     val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
     if(val_forward!=forwardstate){  //se l'input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
@@ -672,12 +714,13 @@ void loop(){
         }
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
-        enter1=6;  //setta la variabile a 6
+        mod5=0;  //resetta la variabile
+        enter1=7;  //setta la variabile a 7
         printed=0;  //resetta la variabile
       }
     }
   }
-  if(enter1==0&&stats==7){  //se enter1 è uguale a 0 stats è uguale a 7
+  if(enter1==0&&stats==8){  //se enter1 è uguale a 0 stats è uguale a 8
     val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
     if(val_forward!=forwardstate){  //se l'input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
@@ -693,27 +736,7 @@ void loop(){
         }
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
-        enter1=7;  //setta la variabile a 7
-        printed=0;  //resetta la variabile
-      }
-    }
-  }
-  if(enter1==0&&stats==8){  //se enter1 è uguale a 0 stats è uguale a 8
-    val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
-    if(val_forward!=forwardstate){  //se l'input del pulsante è diverso dallo stato del pulsante
-      forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
-      if(forwardstate==HIGH){  //se lo stato del pulsante è HIGH
-        lcd.setBacklight(HIGH);  //accendi illuminazione lcd
-        light=millis()+blon;  //imposta il timer di accensione display
-        mod1=0;  //resetta la variabile
-        mod2=0;  //resetta la variabile
-        for(int i=0;i<(size3-1);i++){
-          if(controltemp[i]==maxcputemp){
-            mod3=i;
-            break;
-          }
-        }
-        mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=8;  //setta la variabile a 8
         printed=0;  //resetta la variabile
       }
@@ -729,12 +752,13 @@ void loop(){
         mod1=0;  //resetta la variabile
         mod2=0;  //resetta la variabile
         for(int i=0;i<(size3-1);i++){
-          if(mainmenu[i]==home){
+          if(controltemp[i]==maxcputemp){
             mod3=i;
             break;
           }
         }
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=9;  //setta la variabile a 9
         printed=0;  //resetta la variabile
       }
@@ -750,12 +774,13 @@ void loop(){
         mod1=0;  //resetta la variabile
         mod2=0;  //resetta la variabile
         for(int i=0;i<(size3-1);i++){
-          if(backlight[i]==blon){
+          if(mainmenu[i]==home){
             mod3=i;
             break;
           }
         }
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=10;  //setta la variabile a 10
         printed=0;  //resetta la variabile
       }
@@ -770,13 +795,14 @@ void loop(){
         light=millis()+blon;  //imposta il timer di accensione display
         mod1=0;  //resetta la variabile
         mod2=0;  //resetta la variabile
-        mod3=0;  //resetta la variabile
-        for(int i=0;i<(size4-1);i++){
-          if(forcecold[i]==fcold){
-            mod4=i;
+        for(int i=0;i<(size3-1);i++){
+          if(backlight[i]==blon){
+            mod3=i;
             break;
           }
         }
+        mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=11;  //setta la variabile a 11
         printed=0;  //resetta la variabile
       }
@@ -793,11 +819,12 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         for(int i=0;i<(size4-1);i++){
-          if(forceheat[i]==fheat){
+          if(forcecold[i]==fcold){
             mod4=i;
             break;
           }
         }
+        mod5=0;  //resetta la variabile
         enter1=12;  //setta la variabile a 12
         printed=0;  //resetta la variabile
       }
@@ -814,11 +841,12 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         for(int i=0;i<(size4-1);i++){
-          if(forcechamberfan[i]==fff){
+          if(forceheat[i]==fheat){
             mod4=i;
             break;
           }
         }
+        mod5=0;  //resetta la variabile
         enter1=13;  //setta la variabile a 13
         printed=0;  //resetta la variabile
       }
@@ -835,20 +863,126 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         for(int i=0;i<(size4-1);i++){
-          if(forcecpufan[i]==fcf){
+          if(forcechamberfan[i]==fff){
             mod4=i;
             break;
           }
         }
+        mod5=0;  //resetta la variabile
         enter1=14;  //setta la variabile a 14
         printed=0;  //resetta la variabile
       }
     }
   }
-  /*VISUALIZZAZIONE MENU DI MODIFICA*/
+  if(enter1==0&&stats==15){  //se enter1 è uguale a 0 stats è uguale a 15
+    val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
+    if(val_forward!=forwardstate){  //se l'input del pulsante è diverso dallo stato del pulsante
+      forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
+      if(forwardstate==HIGH){  //se lo stato del pulsante è HIGH
+        lcd.setBacklight(HIGH);  //accendi illuminazione lcd
+        light=millis()+blon;  //imposta il timer di accensione display
+        mod1=0;  //resetta la variabile
+        mod2=0;  //resetta la variabile
+        mod3=0;  //resetta la variabile
+        for(int i=0;i<(size4-1);i++){
+          if(forcecpufan[i]==fcf){
+            mod4=i;
+            break;
+          }
+        }
+        mod5=0;  //resetta la variabile
+        enter1=15;  //setta la variabile a 15
+        printed=0;  //resetta la variabile
+      }
+    }
+  }
+  /*VISUALIZZAZIONE MENU STATISTICHE CONTATORI*/
   if(enter1==1&&stats==1&&printed==0){  //se enter1 è uguale a 1 stats è uguale a 1 printed è uguale a 0
+    if(mod5==0){
+      menu=millis()+home;  //imposta il timer di ritorno al menu principale
+      if(mod5>3||mod5<0){  //se la variabile mod5 è maggiore di 3 o minore di 0
+        mod5=0;  //resetta la variabile
+      }
+      lcd.clear();  //pulisci lo schermo
+      lcd.setCursor(0,0);  //posiziona il cursore a
+      lcd.print("WORKING STATS       ");  //scrivi
+      lcd.setCursor(0,1);  //posiziona il cursore a
+      lcd.print("enter to exit     ");  //scrivi
+      lcd.setCursor(0,2);  //posiziona il cursore a
+      lcd.print(cscount);  //scrivi la variabile
+      lcd.setCursor(0,3);  //posiziona il cursore a
+      lcd.print(cicount);  //scrivi la variabile
+      printed=1;  //setta la variabile a 1 per visualizzare una sola volta
+    }
+    else if(mod5==1){
+      menu=millis()+home;  //imposta il timer di ritorno al menu principale
+      if(mod5>3||mod5<0){  //se la variabile mod5 è maggiore di 3 o minore di 0
+        mod5=0;  //resetta la variabile
+      }
+      lcd.clear();  //pulisci lo schermo
+      lcd.setCursor(0,0);  //posiziona il cursore a
+      lcd.print("WORKING STATS       ");  //scrivi
+      lcd.setCursor(0,1);  //posiziona il cursore a
+      lcd.print("enter to exit     ");  //scrivi
+      lcd.setCursor(0,2);  //posiziona il cursore a
+      lcd.print(hscount);  //scrivi la variabile
+      lcd.setCursor(0,3);  //posiziona il cursore a
+      lcd.print(hicount);  //scrivi la variabile
+      printed=1;  //setta la variabile a 1 per visualizzare una sola volta
+    }
+    else if(mod5==2){
+      menu=millis()+home;  //imposta il timer di ritorno al menu principale
+      if(mod5>3||mod5<0){  //se la variabile mod5 è maggiore di 3 o minore di 0
+        mod5=0;  //resetta la variabile
+      }
+      lcd.clear();  //pulisci lo schermo
+      lcd.setCursor(0,0);  //posiziona il cursore a
+      lcd.print("WORKING STATS       ");  //scrivi
+      lcd.setCursor(0,1);  //posiziona il cursore a
+      lcd.print("enter to exit     ");  //scrivi
+      lcd.setCursor(0,2);  //posiziona il cursore a
+      lcd.print(sicount);  //scrivi la variabile
+      lcd.setCursor(0,3);  //posiziona il cursore a
+      lcd.print(ffscount);  //scrivi la variabile
+      printed=1;  //setta la variabile a 1 per visualizzare una sola volta
+    }
+    else if(mod5==3){
+      menu=millis()+home;  //imposta il timer di ritorno al menu principale
+      if(mod5>3||mod5<0){  //se la variabile mod5 è maggiore di 3 o minore di 0
+        mod5=0;  //resetta la variabile
+      }
+      lcd.clear();  //pulisci lo schermo
+      lcd.setCursor(0,0);  //posiziona il cursore a
+      lcd.print("WORKING STATS       ");  //scrivi
+      lcd.setCursor(0,1);  //posiziona il cursore a
+      lcd.print("enter to exit     ");  //scrivi
+      lcd.setCursor(0,2);  //posiziona il cursore a
+      lcd.print(fcscount);  //scrivi la variabile
+      lcd.setCursor(0,3);  //posiziona il cursore a
+      lcd.print(fhscount);  //scrivi la variabile
+      printed=1;  //setta la variabile a 1 per visualizzare una sola volta
+    }
+    else if(mod5==4){
+      menu=millis()+home;  //imposta il timer di ritorno al menu principale
+      if(mod5>3||mod5<0){  //se la variabile mod5 è maggiore di 3 o minore di 0
+        mod5=0;  //resetta la variabile
+      }
+      lcd.clear();  //pulisci lo schermo
+      lcd.setCursor(0,0);  //posiziona il cursore a
+      lcd.print("WORKING STATS       ");  //scrivi
+      lcd.setCursor(0,1);  //posiziona il cursore a
+      lcd.print("enter to exit     ");  //scrivi
+      lcd.setCursor(0,2);  //posiziona il cursore a
+      lcd.print(ficount);  //scrivi la variabile
+      lcd.setCursor(0,3);  //posiziona il cursore a
+      lcd.print("                  ");  //scrivi la variabile
+      printed=1;  //setta la variabile a 1 per visualizzare una sola volta
+    }
+  }
+  /*VISUALIZZAZIONE MENU DI MODIFICA*/
+  if(enter1==2&&stats==2&&printed==0){  //se enter1 è uguale a 2 stats è uguale a 2 printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
-    if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
+    if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 15 o minore di 0
       mod2=0;  //resetta la variabile
     }
     lcd.clear();  //pulisci lo schermo
@@ -868,7 +1002,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==2&&stats==2&&printed==0){  //se enter1 è uguale a 2 stats è uguale a 2 printed è uguale a 0
+  if(enter1==3&&stats==3&&printed==0){  //se enter1 è uguale a 3 stats è uguale a 3 printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod1>63||mod1<0){  //se la variabile mod1 è maggiore di 63 o minore di 0
       mod1=0;  //resetta la variabile
@@ -890,7 +1024,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==3&&stats==3&&printed==0){  //se enter1 è uguale a 3 stats è uguale a 3 printed è uguale a 0
+  if(enter1==4&&stats==4&&printed==0){  //se enter1 è uguale a 4 stats è uguale a 4 printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
       mod2=0;  //resetta la variabile
@@ -912,7 +1046,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==4&&stats==4&&printed==0){  //se enter1 è uguale a 4 stats è uguale a 4 printed è uguale a 0
+  if(enter1==5&&stats==5&&printed==0){  //se enter1 è uguale a 5 stats è uguale a 5 printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
       mod2=0;  //resetta la variabile
@@ -934,7 +1068,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==5&&stats==5&&printed==0){  //se enter1 è uguale a 5 stats è uguale a 5 printed è uguale a 0
+  if(enter1==6&&stats==6&&printed==0){  //se enter1 è uguale a 6 stats è uguale a 6 printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod1>63||mod1<0){  //se la variabile mod1 è maggiore di 63 o minore di 0
       mod1=0;  //resetta la variabile
@@ -956,7 +1090,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==6&&stats==6&&printed==0){  //se enter1 è uguale a 6 stats è uguale a 6 printed è uguale a 0
+  if(enter1==7&&stats==7&&printed==0){  //se enter1 è uguale a 7 stats è uguale a 7 printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
       mod2=0;  //resetta la variabile
@@ -978,7 +1112,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==7&&stats==7&&printed==0){  //se enter1 è uguale a 7 stats è uguale a 7 printed è uguale a 0
+  if(enter1==8&&stats==8&&printed==0){  //se enter1 è uguale a 8 stats è uguale a 8 printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod2>15||mod2<0){  //se la variabile mod2 è maggiore di 4 o minore di 0
       mod2=0;  //resetta la variabile
@@ -1000,7 +1134,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==8&&stats==8&&printed==0){  //se enter1 è uguale a 8 stats è uguale a 8 printed è uguale a 0
+  if(enter1==9&&stats==9&&printed==0){  //se enter1 è uguale a 9 stats è uguale a 9 printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod3>3||mod3<0){  //se la variabile mod3 è maggiore di 4 o minore di 0
       mod3=0;  //resetta la variabile
@@ -1022,7 +1156,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==9&&stats==9&&printed==0){  //se enter1 è uguale a 9 stats è uguale a 9 printed è uguale a 0
+  if(enter1==10&&stats==10&&printed==0){  //se enter1 è uguale a 10 stats è uguale a 10 printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod3>3||mod3<0){  //se la variabile mod3 è maggiore di 3 o minore di 0
       mod3=0;  //resetta la variabile
@@ -1044,7 +1178,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==10&&stats==10&&printed==0){  //se enter1 è uguale a 10 stats è uguale a 10 printed è uguale a 0
+  if(enter1==11&&stats==11&&printed==0){  //se enter1 è uguale a 11 stats è uguale a 11 printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod3>3||mod3<0){  //se la variabile mod3 è maggiore di 4 o minore di 0
       mod3=0;  //resetta la variabile
@@ -1066,7 +1200,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==11&&stats==11&&printed==0){  //se enter1 è uguale a 11 stats è uguale a 11 printed è uguale a 0
+  if(enter1==12&&stats==12&&printed==0){  //se enter1 è uguale a 12 stats è uguale a 12 printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod4>2||mod4<0){  //se la variabile mod4 è maggiore di 2 o minore di 0
       mod4=0;  //resetta la variabile
@@ -1088,7 +1222,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==12&&stats==12&&printed==0){  //se enter1 è uguale a 12 stats è uguale a 12 printed è uguale a 0
+  if(enter1==13&&stats==13&&printed==0){  //se enter1 è uguale a 13 stats è uguale a 13 printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod4>2||mod4<0){  //se la variabile mod4 è maggiore di 2 o minore di 0
       mod4=0;  //resetta la variabile
@@ -1110,7 +1244,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==13&&stats==13&&printed==0){  //se enter1 è uguale a 13 stats è uguale a 13 printed è uguale a 0
+  if(enter1==14&&stats==14&&printed==0){  //se enter1 è uguale a 14 stats è uguale a 14 printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod4>2||mod4<0){  //se la variabile mod4 è maggiore di 2 o minore di 0
       mod4=0;  //resetta la variabile
@@ -1132,7 +1266,7 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  if(enter1==14&&stats==14&&printed==0){  //se enter1 è uguale a 14 stats è uguale a 14 printed è uguale a 0
+  if(enter1==15&&stats==15&&printed==0){  //se enter1 è uguale a 15 stats è uguale a 15 printed è uguale a 0
     menu=millis()+home;  //imposta il timer di ritorno al menu principale
     if(mod4>2|mod4<0){  //se la variabile mod4 è maggiore di 2 o minore di 0
       mod4=0;  //resetta la variabile
@@ -1154,13 +1288,12 @@ void loop(){
     Serial.println(mod3);
     Serial.println(mod4);
   }
-  /*COMANDI PER CONFERMARE MODIFICA PARAMETRI*/  //necessario perché VISUALIZZAZIONE MENU DI MODIFICA vien scritto solo una volta
+  /*COMANDI PER USCIRE DAL MENU VISUALIZZAZIONE STATISTICHE CONTATORI*/  //necessario perché il blocco VISUALIZZAZIONE MENU STATISTICHE CONTATORI viene eseguito solo una volta
   else if(enter1==1){  //se enter1 è uguale a 1
     val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
       if(forwardstate==HIGH){  //se lo stato del pulsante è high
-        sbidle=standbyidle[mod2];  //salva il valore corrispondente alla variabile mod2 contenuto nell array standbyidle nella variabile sbidle
         lcd.setBacklight(HIGH);  //accendi illuminazione lcd
         light=millis()+blon;  //imposta il timer di accensione display
         stats=1;  //setta la variabile a 1
@@ -1168,17 +1301,19 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=0;  //resetta la variabile
         printed=0;  //resetta la variabile
       }
     }
   }
+  /*COMANDI PER CONFERMARE MODIFICA PARAMETRI*/  //necessario perché il blocco VISUALIZZAZIONE MENU DI MODIFICA viene eseguito solo una volta
   else if(enter1==2){  //se enter1 è uguale a 2
     val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
       if(forwardstate==HIGH){  //se lo stato del pulsante è high
-        maxtemp=toptemp[mod1];  //salva il valore corrispondente alla variabile mod1 contenuto nell array toptemp nella variabile maxtemp
+        sbidle=standbyidle[mod2];  //salva il valore corrispondente alla variabile mod2 contenuto nell array standbyidle nella variabile sbidle
         lcd.setBacklight(HIGH);  //accendi illuminazione lcd
         light=millis()+blon;  //imposta il timer di accensione display
         stats=2;  //setta la variabile a 2
@@ -1186,6 +1321,7 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=0;  //resetta la variabile
         printed=0;  //resetta la variabile
       }
@@ -1196,7 +1332,7 @@ void loop(){
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
       if(forwardstate==HIGH){  //se lo stato del pulsante è high
-        cstartup=coldstartup[mod2];  //salva il valore corrispondente alla variabile mod2 contenuto nell array coldstartup nella variabile cstartup
+        maxtemp=toptemp[mod1];  //salva il valore corrispondente alla variabile mod1 contenuto nell array toptemp nella variabile maxtemp
         lcd.setBacklight(HIGH);  //accendi illuminazione lcd
         light=millis()+blon;  //imposta il timer di accensione display
         stats=3;  //setta la variabile a 3
@@ -1204,6 +1340,7 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=0;  //resetta la variabile
         printed=0;  //resetta la variabile
       }
@@ -1214,7 +1351,7 @@ void loop(){
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
       if(forwardstate==HIGH){  //se lo stato del pulsante è high
-        cidle=coldidle[mod2];  //salva il valore corrispondente alla variabile mod2 contenuto nell array coldidle nella variabile cidle
+        cstartup=coldstartup[mod2];  //salva il valore corrispondente alla variabile mod2 contenuto nell array coldstartup nella variabile cstartup
         lcd.setBacklight(HIGH);  //accendi illuminazione lcd
         light=millis()+blon;  //imposta il timer di accensione display
         stats=4;  //setta la variabile a 4
@@ -1222,6 +1359,7 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=0;  //resetta la variabile
         printed=0;  //resetta la variabile
       }
@@ -1232,7 +1370,7 @@ void loop(){
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
       if(forwardstate==HIGH){  //se lo stato del pulsante è high
-        mintemp=bottomtemp[mod1];//salva il valore corrispondente alla variabile mod1 contenuto nell array bottomtemp nella variabile mintemp
+        cidle=coldidle[mod2];  //salva il valore corrispondente alla variabile mod2 contenuto nell array coldidle nella variabile cidle
         lcd.setBacklight(HIGH);  //accendi illuminazione lcd
         light=millis()+blon;  //imposta il timer di accensione display
         stats=5;  //setta la variabile a 5
@@ -1240,6 +1378,7 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=0;  //resetta la variabile
         printed=0;  //resetta la variabile
       }
@@ -1250,7 +1389,7 @@ void loop(){
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
       if(forwardstate==HIGH){  //se lo stato del pulsante è high
-        hstartup=heatstartup[mod2];  //salva il valore corrispondente alla variabile mod2 contenuto nell array heatstartup nella variabile hstartup
+        mintemp=bottomtemp[mod1];//salva il valore corrispondente alla variabile mod1 contenuto nell array bottomtemp nella variabile mintemp
         lcd.setBacklight(HIGH);  //accendi illuminazione lcd
         light=millis()+blon;  //imposta il timer di accensione display
         stats=6;  //setta la variabile a 6
@@ -1258,6 +1397,7 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=0;  //resetta la variabile
         printed=0;  //resetta la variabile
       }
@@ -1268,7 +1408,7 @@ void loop(){
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
       if(forwardstate==HIGH){  //se lo stato del pulsante è high
-        hidle=heatidle[mod2];  //salva il valore corrispondente alla variabile mod2 contenuto nell array heatidle nella variabile hidle
+        hstartup=heatstartup[mod2];  //salva il valore corrispondente alla variabile mod2 contenuto nell array heatstartup nella variabile hstartup
         lcd.setBacklight(HIGH);  //accendi illuminazione lcd
         light=millis()+blon;  //imposta il timer di accensione display
         stats=7;  //setta la variabile a 7
@@ -1276,6 +1416,7 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=0;  //resetta la variabile
         printed=0;  //resetta la variabile
       }
@@ -1286,7 +1427,7 @@ void loop(){
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
       if(forwardstate==HIGH){  //se lo stato del pulsante è high
-        maxcputemp=controltemp[mod3];  //salva il valore corrispondente alla variabile mod3 contenuto nell array controltemp nella variabile maxcputemp
+        hidle=heatidle[mod2];  //salva il valore corrispondente alla variabile mod2 contenuto nell array heatidle nella variabile hidle
         lcd.setBacklight(HIGH);  //accendi illuminazione lcd
         light=millis()+blon;  //imposta il timer di accensione display
         stats=8;  //setta la variabile a 8
@@ -1294,6 +1435,7 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=0;  //resetta la variabile
         printed=0;  //resetta la variabile
       }
@@ -1304,7 +1446,7 @@ void loop(){
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
       if(forwardstate==HIGH){  //se lo stato del pulsante è high
-        home=mainmenu[mod3];  //salva il valore corrispondente alla variabile mod3 contenuto nell array mainmenu nella variabile home
+        maxcputemp=controltemp[mod3];  //salva il valore corrispondente alla variabile mod3 contenuto nell array controltemp nella variabile maxcputemp
         lcd.setBacklight(HIGH);  //accendi illuminazione lcd
         light=millis()+blon;  //imposta il timer di accensione display
         stats=9;  //setta la variabile a 9
@@ -1312,6 +1454,7 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=0;  //resetta la variabile
         printed=0;  //resetta la variabile
       }
@@ -1322,7 +1465,7 @@ void loop(){
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
       if(forwardstate==HIGH){  //se lo stato del pulsante è high
-        blon=backlight[mod3];  //salva il valore corrispondente alla variabile mod3 contenuto nell array backlight nella variabile blon
+        home=mainmenu[mod3];  //salva il valore corrispondente alla variabile mod3 contenuto nell array mainmenu nella variabile home
         lcd.setBacklight(HIGH);  //accendi illuminazione lcd
         light=millis()+blon;  //imposta il timer di accensione display
         stats=10;  //setta la variabile a 10
@@ -1330,6 +1473,7 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=0;  //resetta la variabile
         printed=0;  //resetta la variabile
       }
@@ -1340,7 +1484,7 @@ void loop(){
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
       if(forwardstate==HIGH){  //se lo stato del pulsante è high
-        fcold=forcecold[mod4];  //salva il valore corrispondente alla variabile mod4 contenuto nell array forcecold nella variabile fcold
+        blon=backlight[mod3];  //salva il valore corrispondente alla variabile mod3 contenuto nell array backlight nella variabile blon
         lcd.setBacklight(HIGH);  //accendi illuminazione lcd
         light=millis()+blon;  //imposta il timer di accensione display
         stats=11;  //setta la variabile a 11
@@ -1348,6 +1492,7 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=0;  //resetta la variabile
         printed=0;  //resetta la variabile
       }
@@ -1358,7 +1503,7 @@ void loop(){
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
       if(forwardstate==HIGH){  //se lo stato del pulsante è high
-        fheat=forceheat[mod4];  //salva il valore corrispondente alla variabile mod3 contenuto nell array forceheat nella variabile fheat
+        fcold=forcecold[mod4];  //salva il valore corrispondente alla variabile mod4 contenuto nell array forcecold nella variabile fcold
         lcd.setBacklight(HIGH);  //accendi illuminazione lcd
         light=millis()+blon;  //imposta il timer di accensione display
         stats=12;  //setta la variabile a 12
@@ -1366,6 +1511,7 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=0;  //resetta la variabile
         printed=0;  //resetta la variabile
       }
@@ -1376,7 +1522,7 @@ void loop(){
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
       if(forwardstate==HIGH){  //se lo stato del pulsante è high
-        fff=forcechamberfan[mod4];  //salva il valore corrispondente alla variabile mod4 contenuto nell array forcechamberfan nella variabile fff
+        fheat=forceheat[mod4];  //salva il valore corrispondente alla variabile mod3 contenuto nell array forceheat nella variabile fheat
         lcd.setBacklight(HIGH);  //accendi illuminazione lcd
         light=millis()+blon;  //imposta il timer di accensione display
         stats=13;  //setta la variabile a 13
@@ -1384,6 +1530,7 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=0;  //resetta la variabile
         printed=0;  //resetta la variabile
       }
@@ -1394,7 +1541,7 @@ void loop(){
     if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
       forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
       if(forwardstate==HIGH){  //se lo stato del pulsante è high
-        fcf=forcecpufan[mod4];  //salva il valore corrispondente alla variabile mod4 contenuto nell array forcecpufan nella variabile fcf
+        fff=forcechamberfan[mod4];  //salva il valore corrispondente alla variabile mod4 contenuto nell array forcechamberfan nella variabile fff
         lcd.setBacklight(HIGH);  //accendi illuminazione lcd
         light=millis()+blon;  //imposta il timer di accensione display
         stats=14;  //setta la variabile a 14
@@ -1402,6 +1549,26 @@ void loop(){
         mod2=0;  //resetta la variabile
         mod3=0;  //resetta la variabile
         mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
+        enter1=0;  //resetta la variabile
+        printed=0;  //resetta la variabile
+      }
+    }
+  }
+  else if(enter1==15){  //se enter1 è uguale a 15
+    val_forward=digitalRead(forward);  //leggi lo stato del pulsante forward
+    if(val_forward!=forwardstate){  //se l input del pulsante è diverso dallo stato del pulsante
+      forwardstate=val_forward;  //salva il valore dell'input nella variabile di stato pulsante
+      if(forwardstate==HIGH){  //se lo stato del pulsante è high
+        fcf=forcecpufan[mod4];  //salva il valore corrispondente alla variabile mod4 contenuto nell array forcecpufan nella variabile fcf
+        lcd.setBacklight(HIGH);  //accendi illuminazione lcd
+        light=millis()+blon;  //imposta il timer di accensione display
+        stats=15;  //setta la variabile a 15
+        mod1=0;  //resetta la variabile
+        mod2=0;  //resetta la variabile
+        mod3=0;  //resetta la variabile
+        mod4=0;  //resetta la variabile
+        mod5=0;  //resetta la variabile
         enter1=0;  //resetta la variabile
         printed=0;  //resetta la variabile
       }
@@ -1441,39 +1608,41 @@ void loop(){
       if(enter1==0&&printed==1){  //ogni 15 secondi e se enter1 è uguale a 0 aggiorna i dati a display
         lcd.clear();  //pulisci lo schermo
         lcd.setCursor(0,0);  //posiziona il cursore a
-        lcd.print("Temperature:");  //scrivi
-        lcd.setCursor(12,0);  //posiziona il cursore a
-        lcd.print(fermtempaverage,2);  //scrivi la variabile fermtemp con due cifre dopo la virgola
+        lcd.print("MAIN MENU           ");  //scrivi
         lcd.setCursor(0,1);  //posiziona il cursore a
+        lcd.print("Temperature:");  //scrivi
+        lcd.setCursor(12,1);  //posiziona il cursore a
+        lcd.print(fermtempaverage,2);  //scrivi la variabile fermtempaverage con due cifre dopo la virgola
+        lcd.setCursor(0,2);  //posiziona il cursore a
+        lcd.print("Setpoints:");  //scrivi
+        lcd.setCursor(9,2);  //posiziona il cursore a
+        lcd.print(mintemp,1);  //scrivi
+        lcd.setCursor(13,2);  //posiziona il cursore a
+        lcd.print("-");  //scrivi
+        lcd.setCursor(14,2);  //posiziona il cursore a
+        lcd.print(maxtemp,1);  //scrivi
+        lcd.setCursor(0,3);  //posiziona il cursore a
         lcd.print("Status:");  //scrivi
         if(mode==1){  //se lo stato del sistema è uguale a 1
-          lcd.setCursor(7,1);  //posiziona il cursore a
+          lcd.setCursor(7,3);  //posiziona il cursore a
           lcd.print("cold on");  //scrivi
         }
         else if(mode==2){  //se lo stato del sistema è uguale a 2
-          lcd.setCursor(7,1);  //posiziona il cursore a
+          lcd.setCursor(7,3);  //posiziona il cursore a
           lcd.print("heat on");  //scrivi
         }
         else if(mode==3){  //se lo stato del sistema è uguale a 3
-          lcd.setCursor(7,1);  //posiziona il cursore a
+          lcd.setCursor(7,3);  //posiziona il cursore a
           lcd.print("cooling");  //scrivi
         }
         else if(mode==4){  //se lo stato del sistema è uguale a 4
-          lcd.setCursor(7,1);  //posiziona il cursore a
+          lcd.setCursor(7,3);  //posiziona il cursore a
           lcd.print("warming");  //scrivi
         }
         else if(mode==5){  //se lo stato del sistema è uguale a 5
-          lcd.setCursor(7,1);  //posiziona il cursore a
+          lcd.setCursor(7,3);  //posiziona il cursore a
           lcd.print("off");  //scrivi
         }
-        lcd.setCursor(0,2);  //posiziona il cursore a
-        lcd.print("Cold cycles:");  //scrivi
-        lcd.setCursor(12,2);  //posiziona il cursore a
-        lcd.print(cscount);  //scrivi il contatore delle accensioni ciclo raffreddamento
-        lcd.setCursor(0,3);  //posiziona il cursore a
-        lcd.print("Heat cycles:");  //scrivi
-        lcd.setCursor(12,3);  //posiziona il cursore a
-        lcd.print(hscount);  //scrivi il contatore delle accensioni ciclo riscaldamento
         printed=1;  //setta la variabile a 1 per visualizzare una sola volta
       }
     }
@@ -1507,7 +1676,6 @@ void loop(){
         else if(fff==2){
           ventilation=255;  //setta la ventilazione a 100% pwm
           analogWrite(5,ventilation);  //accendi la ventilazione
-          fffscount++;
         }
       }
       else if(heating==HIGH){  //se il riscaldamento è acceso
@@ -1529,7 +1697,6 @@ void loop(){
         else if(fff==2){
           ventilation=255;  //setta la ventilazione a 100% pwm
           analogWrite(5,ventilation);  //accendi la ventilazione
-          fffscount++;
         }
       }
     }
@@ -1550,7 +1717,6 @@ void loop(){
           else if(fff==2){
             ventilation=255;  //setta la ventilazione a 100% pwm
             analogWrite(5,ventilation);  //accendi la ventilazione
-            fffscount++;
           }
         }
         else if(fcold==2){
@@ -1571,8 +1737,6 @@ void loop(){
             if(fff==1){
               ffscount++;
             }
-            else if(fff==2){
-              fffscount++;
           }
         }
         else if(fheat==2){
@@ -1592,9 +1756,6 @@ void loop(){
             analogWrite(5,ventilation);  //accendi la ventilazione
             if(fff==1){
               ffscount++;
-            }
-            else if(fff==2){
-              fffscount++;
             }
           }
         }
@@ -1628,9 +1789,6 @@ void loop(){
             if(fff==1){
               ffscount++;
             }
-            else if(fff==2){
-              fffscount++;
-            }
           }
         }
         else{
@@ -1649,7 +1807,6 @@ void loop(){
             else if(fff==2){
               ventilation=255;  //setta la ventilazione a 100% pwm
               analogWrite(5,ventilation);  //accendi la ventilazione
-              fffscount++;
             }
           }
           else if(fheat==2){
@@ -1669,9 +1826,6 @@ void loop(){
               analogWrite(5,ventilation);  //accendi la ventilazione
               if(fff==1){
                 ffscount++;
-              }
-              else if(fff==2){
-                fffscount++;
               }
             }
           }
@@ -1706,9 +1860,6 @@ void loop(){
             if(fff==1){
               ffscount++;
             }
-            else if(fff==2){
-              fffscount++;
-            }
           }
         }
         else{
@@ -1727,7 +1878,6 @@ void loop(){
             else if(fff==2){
               ventilation=255;  //setta la ventilazione a 100% pwm
               analogWrite(5,ventilation);  //accendi la ventilazione
-              fffscount++;
             }
           }
           else if(fcold==2){
@@ -1747,9 +1897,6 @@ void loop(){
               analogWrite(5,ventilation);  //accendi la ventilazione
               if(fff==1){
                 ffscount++;
-              }
-              else if(fff==2){
-                fffscount++;
               }
             }
           }
