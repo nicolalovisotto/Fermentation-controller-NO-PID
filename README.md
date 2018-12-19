@@ -1,7 +1,7 @@
 # buildings
 
 
-Software for fermentation processes control in chiller systems.
+Software designed for complete cooling and heating control in air conditioning systems.
 
 Components list:
 - Arduino Mega2560
@@ -20,8 +20,8 @@ Suits for:
 Working parameters can be activated/deactivated and modified from LCD display.
 
 Next steps:
-1) add a function to change real-time stats update time
+1) add a function to modify setpoints gap (min or max setpoint elimination?)
 2) set up sketch for PT100/NTC temperature probe
 3) code optimization switching global variables with local variables
 4) interface development to display and modify real time data via Bluetooth and/or web
-5) PCB circuit.
+5) wiring diagram, specifications and PCB.
