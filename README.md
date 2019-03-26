@@ -1,10 +1,10 @@
-# buildings
+# Fermentation controller NO PID
 
 
 Software designed for complete cooling and heating control in air conditioning systems.
 
 Main components list:
-- Arduino Mega2560
+- NodeMCU ESP-12E
 - LCD display 20x4
 - DS3231 real time clock (RTC)
 - 3 normally opened buttons (NO)
@@ -17,9 +17,9 @@ Suits for:
 - fermentation chamber ventilation
 - CPU ventilation.
 
-Working parameters can be activated/deactivated and modified from LCD display.
+Working parameters can be enabled, disabled or modified from LCD display.
 
 Next steps:
 1) add a function to modify setpoints gap (min or max setpoint elimination?)
 2) interface development to display and modify real time data via Bluetooth and/or web
-3) wiring diagram, specifications and PCB.
+3) wiring diagram.
