@@ -1,7 +1,7 @@
 # Fermentation controller NO PID
 
 
-Software designed for complete cooling and heating control in air conditioning systems.
+Software designed for cooling and heating fermentation control in refrigerators and freezers.
 
 Main components list:
 - NodeMCU ESP-12E
