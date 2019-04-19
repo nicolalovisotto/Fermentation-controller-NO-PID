@@ -20,6 +20,9 @@ Suits for:
 Working parameters can be enabled, disabled or modified from LCD display or Blynk.
 
 Next steps:
-1) add a function to modify setpoints gap (min or max setpoint elimination?)
-2) interface development to display and modify real time data via Bluetooth and/or web
-3) wiring diagram.
+1) add a function to secure setpoints gap
+2) add offset to temperature
+3) board always on with other devices shutdown/enable
+4) board deep sleep function
+5) interface development to display and modify real time data and/or web
+6) wiring diagram.
